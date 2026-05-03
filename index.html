@@ -13,14 +13,24 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
 
 body{
-    background:
-    radial-gradient(circle at 20% 0%, rgba(255,0,0,.15), transparent 40%),
-    radial-gradient(circle at 80% 10%, rgba(255,0,0,.08), transparent 40%),
-    #0a0a0b;
+    background:#0a0a0b;
     color:#e5e7eb;
+    overflow-x:hidden;
 }
 
-/* NAVBAR */
+/* CURSOR */
+.cursor{
+    position:fixed;
+    width:300px;
+    height:300px;
+    background:radial-gradient(circle, rgba(255,0,0,.25), transparent 70%);
+    pointer-events:none;
+    transform:translate(-50%,-50%);
+    z-index:0;
+    transition:0.1s;
+}
+
+/* NAV */
 .navbar{
     position:sticky;
     top:0;
@@ -40,18 +50,9 @@ body{
 }
 
 .logo img{width:38px;}
+.logo h1{font-weight:900;color:#ff0000;}
 
-.logo h1{
-    font-weight:900;
-    color:#ff0000;
-}
-
-/* NAV */
-.nav-links{
-    display:flex;
-    gap:6px;
-}
-
+/* NAV BUTTONS */
 .nav-links button{
     background:none;
     border:none;
@@ -59,12 +60,28 @@ body{
     padding:8px 14px;
     border-radius:8px;
     cursor:pointer;
-    transition:.2s;
+    transition:.25s;
+    position:relative;
+}
+
+.nav-links button::after{
+    content:'';
+    position:absolute;
+    bottom:0;
+    left:50%;
+    width:0%;
+    height:2px;
+    background:#ff0000;
+    transition:.3s;
 }
 
 .nav-links button:hover{
-    background:#121214;
     color:white;
+}
+
+.nav-links button:hover::after{
+    width:60%;
+    left:20%;
 }
 
 /* CONTAINER */
@@ -72,24 +89,24 @@ body{
     max-width:1300px;
     margin:auto;
     padding:40px 20px;
+    position:relative;
+    z-index:2;
 }
 
 /* HERO */
 .hero{
     position:relative;
-    height:340px;
+    height:360px;
     border-radius:18px;
     overflow:hidden;
     margin-bottom:30px;
-    background:#111;
-    border:1px solid rgba(255,255,255,.05);
 }
 
 .hero img{
     width:100%;
     height:100%;
     object-fit:cover;
-    opacity:.75;
+    opacity:.7;
 }
 
 .hero::after{
@@ -98,19 +115,24 @@ body{
     inset:0;
     background:
     linear-gradient(to right, rgba(0,0,0,.85), transparent),
-    linear-gradient(to top, rgba(0,0,0,.6), transparent);
+    linear-gradient(to top, rgba(0,0,0,.7), transparent),
+    radial-gradient(circle at right, rgba(255,0,0,.3), transparent 60%);
 }
 
 .hero-content{
     position:absolute;
     z-index:2;
-    padding:40px;
-    max-width:550px;
+    padding:50px;
+    max-width:600px;
 }
 
 .hero-content h1{
-    font-size:46px;
+    font-size:56px;
     font-weight:900;
+}
+
+.hero-content span{
+    color:#ff0000;
 }
 
 .hero-content p{
@@ -119,36 +141,11 @@ body{
     line-height:1.5;
 }
 
-/* FEATURE STRIP */
-.strip{
-    display:flex;
-    gap:16px;
-    margin-bottom:30px;
-}
-
-.strip-box{
-    flex:1;
-    background:#111114;
-    border:1px solid #1a1a1d;
-    padding:16px;
-    border-radius:12px;
-}
-
-.strip-box h3{
-    font-size:14px;
-    color:#9ca3af;
-}
-
-.strip-box p{
-    margin-top:5px;
-    font-weight:700;
-}
-
 /* GRID */
 .grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:20px;
+    gap:22px;
 }
 
 /* CARD */
@@ -157,20 +154,35 @@ body{
     border-radius:14px;
     overflow:hidden;
     border:1px solid #1a1a1d;
-    transition:.25s;
+    transition:.3s;
     cursor:pointer;
+    transform-style:preserve-3d;
+}
+
+/* hover lighting */
+.card::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(120deg, transparent, rgba(255,255,255,.2), transparent);
+    opacity:0;
+    transition:.3s;
+}
+
+.card:hover::before{
+    opacity:1;
 }
 
 .card:hover{
-    transform:translateY(-6px);
-    border-color:#2a2a2e;
+    border-color:#ff0000;
+    box-shadow:0 20px 60px rgba(255,0,0,.2);
 }
 
+/* IMAGE */
 .card img{
     width:100%;
     height:150px;
     object-fit:cover;
-    background:#1a1a1d;
 }
 
 .card-content{
@@ -204,6 +216,8 @@ iframe{
 
 <body>
 
+<div class="cursor" id="cursor"></div>
+
 <div class="navbar">
     <div class="logo">
         <img src="https://media.discordapp.net/attachments/1447379249659908117/1500568494847164446/rpllogo.png">
@@ -224,92 +238,60 @@ iframe{
 
 <div class="container">
 
-<!-- HOME -->
 <div id="home" class="page active">
 
-    <div class="hero">
-        <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=1600">
-        <div class="hero-content">
-            <h1>RPL Season 10</h1>
-            <p>
-            RPL is the most advanced click-to-shoot CBL/LBA on Roblox, offering a competitive and immersive experience.
-            Structured like the NBA with custom gameplay systems.
-            </p>
-        </div>
-    </div>
-
-    <div class="strip">
-        <div class="strip-box">
-            <h3>League Status</h3>
-            <p>Active Season</p>
-        </div>
-        <div class="strip-box">
-            <h3>Teams</h3>
-            <p>30 Franchises</p>
-        </div>
-        <div class="strip-box">
-            <h3>Cap System</h3>
-            <p>Enabled</p>
-        </div>
-    </div>
-
-    <div class="grid">
-
-        <div class="card" onclick="openPage('caps')">
-            <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1600">
-            <div class="card-content">
-                <h2>Salary Caps</h2>
-                <p>Contracts & payroll system</p>
-            </div>
-        </div>
-
-        <div class="card" onclick="openPage('database')">
-            <img src="https://images.unsplash.com/photo-1504457047772-27faf1c00561?q=80&w=1600">
-            <div class="card-content">
-                <h2>Player Database</h2>
-                <p>Full league roster</p>
-            </div>
-        </div>
-
-        <div class="card" onclick="openPage('picks')">
-            <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1600">
-            <div class="card-content">
-                <h2>PrizePicks</h2>
-                <p>Submit your picks</p>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=1600">
-            <div class="card-content">
-                <h2>Standings</h2>
-                <p>Coming soon</p>
-            </div>
-        </div>
-
+<div class="hero">
+    <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=1600">
+    <div class="hero-content">
+        <h1>RPL <span>SEASON 10</span></h1>
+        <p>
+        The most advanced click-to-shoot CBL/LBA on Roblox. Structured competition,
+        elite gameplay, and a fully built league system.
+        </p>
     </div>
 </div>
 
-<!-- PAGES -->
-<div id="caps" class="page">
-    <iframe src="salary.html"></iframe>
+<div class="grid">
+
+<div class="card" onclick="openPage('caps')">
+    <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1600">
+    <div class="card-content">
+        <h2>Salary Caps</h2>
+        <p>Contracts & payroll system</p>
+    </div>
 </div>
 
-<div id="database" class="page">
-    <iframe src="database.html"></iframe>
+<div class="card" onclick="openPage('database')">
+    <img src="https://images.unsplash.com/photo-1504457047772-27faf1c00561?q=80&w=1600">
+    <div class="card-content">
+        <h2>Player Database</h2>
+        <p>Full league roster</p>
+    </div>
 </div>
 
-<div id="picks" class="page">
-    <iframe src="picks.html"></iframe>
+<div class="card" onclick="openPage('picks')">
+    <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1600">
+    <div class="card-content">
+        <h2>PrizePicks</h2>
+        <p>Submit your picks</p>
+    </div>
 </div>
 
-<div id="stars" class="page">
-    <iframe src="stars.html"></iframe>
+<div class="card">
+    <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=1600">
+    <div class="card-content">
+        <h2>Standings</h2>
+        <p>Coming soon</p>
+    </div>
 </div>
 
-<div id="standings" class="page"><h2>Coming Soon</h2></div>
-<div id="power" class="page"><h2>Coming Soon</h2></div>
-<div id="awards" class="page"><h2>Coming Soon</h2></div>
+</div>
+</div>
+
+<div id="caps" class="page"><iframe src="salary.html"></iframe></div>
+<div id="database" class="page"><iframe src="database.html"></iframe></div>
+<div id="picks" class="page"><iframe src="picks.html"></iframe></div>
+<div id="stars" class="page"><iframe src="stars.html"></iframe></div>
 
 </div>
 
@@ -318,6 +300,31 @@ function openPage(id){
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     document.getElementById(id).classList.add('active');
 }
+
+/* CURSOR */
+const cursor = document.getElementById("cursor");
+document.addEventListener("mousemove", e=>{
+    cursor.style.left = e.clientX+"px";
+    cursor.style.top = e.clientY+"px";
+});
+
+/* CARD TILT */
+document.querySelectorAll('.card').forEach(card=>{
+    card.addEventListener('mousemove', e=>{
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const rotateX = (y - rect.height/2)/20;
+        const rotateY = (rect.width/2 - x)/20;
+
+        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    card.addEventListener('mouseleave', ()=>{
+        card.style.transform = "rotateX(0) rotateY(0)";
+    });
+});
 </script>
 
 </body>
