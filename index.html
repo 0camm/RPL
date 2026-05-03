@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RPL League</title>
+<title>Offical RPL Website</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="https://media.discordapp.net/attachments/1447379249659908117/1500568494847164446/rpllogo.png?ex=69f8e8d0&is=69f79750&hm=afaf4c1b247e94c042d16278bc9a810998285889d73141af095de48184ff6121&=&format=webp&quality=lossless&width=660&height=626">
 <style>
@@ -744,8 +744,8 @@
 
 <!-- FOOTER -->
 <footer class="reveal">
-  <div class="footer-logo">RPL — Roblox Pro League</div>
-  <div class="footer-copy">© 2025 RPL League. All rights reserved.</div>
+  <div class="footer-logo">RPL — Revolutionary Pro League</div>
+  <div class="footer-copy">© 2026 RPL League. All rights reserved.</div>
   <div class="footer-links">
     <a href="#">Rules</a>
     <a href="#">Privacy</a>
@@ -771,6 +771,27 @@
   }, { threshold: 0.12 });
 
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  function navigate(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+  document.getElementById('page-' + page).classList.remove('hidden');
+}
+  
 </script>
+
+<!-- wrap everything from hero down to footer in this -->
+<div id="page-home" class="page">
+  ...hero, sections, footer...
+</div>
+
+<!-- salary caps page -->
+<div id="page-salary" class="page hidden" style="height:100vh;">
+  <iframe 
+    src="https://rplmastersheet.vercel.app/" 
+    style="width:100%;height:100%;border:none;"
+    loading="lazy">
+  </iframe>
+</div>
+  
 </body>
 </html>
