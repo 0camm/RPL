@@ -7,13 +7,16 @@
 
 <title>Official RPL Website</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
 
 body{
-    background:#0b0b0c;
+    background:
+    radial-gradient(circle at 20% 0%, rgba(255,0,0,.15), transparent 40%),
+    radial-gradient(circle at 80% 10%, rgba(255,0,0,.08), transparent 40%),
+    #0a0a0b;
     color:#e5e7eb;
 }
 
@@ -22,9 +25,9 @@ body{
     position:sticky;
     top:0;
     z-index:100;
-    background:rgba(10,10,11,.85);
-    backdrop-filter:blur(12px);
-    border-bottom:1px solid #1f1f23;
+    backdrop-filter:blur(14px);
+    background:rgba(10,10,11,.75);
+    border-bottom:1px solid rgba(255,255,255,.05);
     display:flex;
     justify-content:space-between;
     padding:18px 40px;
@@ -36,36 +39,35 @@ body{
     gap:10px;
 }
 
-.logo img{width:40px;}
+.logo img{width:38px;}
 
 .logo h1{
-    font-weight:800;
+    font-weight:900;
     color:#ff0000;
 }
 
 /* NAV */
 .nav-links{
     display:flex;
-    gap:8px;
+    gap:6px;
 }
 
 .nav-links button{
     background:none;
     border:none;
-    color:#d1d5db;
+    color:#9ca3af;
     padding:8px 14px;
-    border-radius:10px;
+    border-radius:8px;
     cursor:pointer;
-    font-weight:500;
     transition:.2s;
 }
 
 .nav-links button:hover{
-    background:#111114;
-    color:#ff0000;
+    background:#121214;
+    color:white;
 }
 
-/* MAIN */
+/* CONTAINER */
 .container{
     max-width:1300px;
     margin:auto;
@@ -75,11 +77,19 @@ body{
 /* HERO */
 .hero{
     position:relative;
-    height:320px;
+    height:340px;
     border-radius:18px;
     overflow:hidden;
-    margin-bottom:40px;
+    margin-bottom:30px;
     background:#111;
+    border:1px solid rgba(255,255,255,.05);
+}
+
+.hero img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity:.75;
 }
 
 .hero::after{
@@ -87,27 +97,51 @@ body{
     position:absolute;
     inset:0;
     background:
-    linear-gradient(to right, rgba(0,0,0,.8), transparent),
-    linear-gradient(to top, rgba(0,0,0,.7), transparent);
+    linear-gradient(to right, rgba(0,0,0,.85), transparent),
+    linear-gradient(to top, rgba(0,0,0,.6), transparent);
 }
 
 .hero-content{
     position:absolute;
     z-index:2;
     padding:40px;
-    max-width:600px;
+    max-width:550px;
 }
 
 .hero-content h1{
-    font-size:42px;
-    font-weight:800;
+    font-size:46px;
+    font-weight:900;
 }
 
 .hero-content p{
     margin-top:10px;
-    font-size:14px;
     color:#9ca3af;
     line-height:1.5;
+}
+
+/* FEATURE STRIP */
+.strip{
+    display:flex;
+    gap:16px;
+    margin-bottom:30px;
+}
+
+.strip-box{
+    flex:1;
+    background:#111114;
+    border:1px solid #1a1a1d;
+    padding:16px;
+    border-radius:12px;
+}
+
+.strip-box h3{
+    font-size:14px;
+    color:#9ca3af;
+}
+
+.strip-box p{
+    margin-top:5px;
+    font-weight:700;
 }
 
 /* GRID */
@@ -123,19 +157,20 @@ body{
     border-radius:14px;
     overflow:hidden;
     border:1px solid #1a1a1d;
-    transition:.2s;
+    transition:.25s;
     cursor:pointer;
 }
 
 .card:hover{
+    transform:translateY(-6px);
     border-color:#2a2a2e;
-    transform:translateY(-5px);
 }
 
 .card img{
     width:100%;
-    height:140px;
+    height:150px;
     object-fit:cover;
+    background:#1a1a1d;
 }
 
 .card-content{
@@ -144,11 +179,11 @@ body{
 
 .card-content h2{
     font-size:16px;
-    font-weight:600;
+    font-weight:700;
 }
 
 .card-content p{
-    margin-top:4px;
+    margin-top:5px;
     font-size:13px;
     color:#9ca3af;
 }
@@ -161,7 +196,7 @@ iframe{
     width:100%;
     height:85vh;
     border:none;
-    border-radius:14px;
+    border-radius:12px;
     margin-top:20px;
 }
 </style>
@@ -193,19 +228,35 @@ iframe{
 <div id="home" class="page active">
 
     <div class="hero">
+        <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=1600">
         <div class="hero-content">
             <h1>RPL Season 10</h1>
             <p>
-            RPL is the most advanced click-to-shoot CBL/LBA on Roblox, offering a competitive and immersive experience like no other.
-            The league typically features 12 franchises modeled after NBA teams with a structured schedule and custom gameplay systems.
+            RPL is the most advanced click-to-shoot CBL/LBA on Roblox, offering a competitive and immersive experience.
+            Structured like the NBA with custom gameplay systems.
             </p>
+        </div>
+    </div>
+
+    <div class="strip">
+        <div class="strip-box">
+            <h3>League Status</h3>
+            <p>Active Season</p>
+        </div>
+        <div class="strip-box">
+            <h3>Teams</h3>
+            <p>30 Franchises</p>
+        </div>
+        <div class="strip-box">
+            <h3>Cap System</h3>
+            <p>Enabled</p>
         </div>
     </div>
 
     <div class="grid">
 
         <div class="card" onclick="openPage('caps')">
-            <img src="https://media.discordapp.net/attachments/1491607997720559616/1500627576912216135/rpl_banner_3.png">
+            <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1600">
             <div class="card-content">
                 <h2>Salary Caps</h2>
                 <p>Contracts & payroll system</p>
@@ -213,7 +264,7 @@ iframe{
         </div>
 
         <div class="card" onclick="openPage('database')">
-            <img src="https://media.discordapp.net/attachments/1491607997720559616/1500627578744995900/RPLGraphic.png">
+            <img src="https://images.unsplash.com/photo-1504457047772-27faf1c00561?q=80&w=1600">
             <div class="card-content">
                 <h2>Player Database</h2>
                 <p>Full league roster</p>
@@ -221,7 +272,7 @@ iframe{
         </div>
 
         <div class="card" onclick="openPage('picks')">
-            <img src="picks.jpg">
+            <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1600">
             <div class="card-content">
                 <h2>PrizePicks</h2>
                 <p>Submit your picks</p>
@@ -229,7 +280,7 @@ iframe{
         </div>
 
         <div class="card">
-            <img src="standings.jpg">
+            <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=1600">
             <div class="card-content">
                 <h2>Standings</h2>
                 <p>Coming soon</p>
