@@ -106,29 +106,33 @@ body{
     width:100%;
     height:100%;
     object-fit:cover;
-    opacity:.7;
+    filter:brightness(0.45); /* makes image darker */
 }
 
+/* STRONG OVERLAY */
 .hero::after{
     content:'';
     position:absolute;
     inset:0;
     background:
-    linear-gradient(to right, rgba(0,0,0,.85), transparent),
-    linear-gradient(to top, rgba(0,0,0,.7), transparent),
-    radial-gradient(circle at right, rgba(255,0,0,.3), transparent 60%);
+    linear-gradient(to right, rgba(0,0,0,.9), transparent 70%),
+    linear-gradient(to top, rgba(0,0,0,.8), transparent),
+    radial-gradient(circle at right, rgba(255,0,0,.35), transparent 60%);
 }
 
+/* TEXT */
 .hero-content{
     position:absolute;
     z-index:2;
-    padding:50px;
+    padding:60px;
     max-width:600px;
 }
 
 .hero-content h1{
     font-size:56px;
     font-weight:900;
+    color:white;
+    text-shadow:0 10px 30px rgba(0,0,0,.9); /* BIG FIX */
 }
 
 .hero-content span{
@@ -136,9 +140,10 @@ body{
 }
 
 .hero-content p{
-    margin-top:10px;
-    color:#9ca3af;
-    line-height:1.5;
+    margin-top:12px;
+    color:#d1d5db;
+    line-height:1.6;
+    text-shadow:0 5px 20px rgba(0,0,0,.8);
 }
 
 /* GRID */
@@ -242,6 +247,7 @@ iframe{
 
 <div class="hero">
     <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=1600">
+    
     <div class="hero-content">
         <h1>RPL <span>SEASON 10</span></h1>
         <p>
