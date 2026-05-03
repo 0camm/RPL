@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>RPL</title>
+<title>RPL League</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -12,115 +12,132 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter';}
 
 body{
-    background:
-    radial-gradient(circle at 20% 0%, rgba(255,0,0,.25), transparent 30%),
-    radial-gradient(circle at 80% 10%, rgba(255,0,0,.15), transparent 40%),
-    #030303;
-    color:white;
+    background:#f6f7fb;
+    color:#111;
 }
 
-/* SIDEBAR */
-.sidebar{
-    position:fixed;
-    width:240px;
-    height:100vh;
-    background:rgba(0,0,0,.85);
-    backdrop-filter:blur(15px);
-    border-right:1px solid rgba(255,0,0,.15);
-    padding:20px;
+/* NAVBAR */
+nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 40px;
+    background:white;
+    border-bottom:1px solid #eee;
+    position:sticky;
+    top:0;
+    z-index:100;
 }
 
 .logo{
     display:flex;
     align-items:center;
-    gap:10px;
-    margin-bottom:30px;
+    gap:12px;
 }
 
-.logo img{width:50px;}
-.logo h1{font-weight:900;}
+.logo img{
+    width:45px;
+}
 
-.nav{
+.logo h1{
+    font-size:22px;
+    font-weight:900;
+}
+
+.nav-links{
     display:flex;
-    flex-direction:column;
-    gap:10px;
+    gap:25px;
 }
 
-.nav button{
+.nav-links button{
     background:none;
     border:none;
-    color:white;
-    padding:12px;
-    border-radius:12px;
-    text-align:left;
+    font-weight:600;
     cursor:pointer;
+    padding:8px 12px;
+    border-radius:8px;
     transition:.2s;
 }
 
-.nav button:hover{
-    background:rgba(255,0,0,.2);
-    transform:translateX(5px);
-}
-
-/* MAIN */
-.main{
-    margin-left:240px;
-    padding:30px;
+.nav-links button:hover{
+    background:#ffecec;
+    color:#d60000;
 }
 
 /* HERO */
 .hero{
-    background:linear-gradient(135deg,#7f1d1d,#000);
-    padding:50px;
+    margin:30px;
     border-radius:25px;
-    margin-bottom:30px;
-    position:relative;
     overflow:hidden;
+    position:relative;
 }
 
-.hero::after{
-    content:'';
+.hero img{
+    width:100%;
+    height:320px;
+    object-fit:cover;
+    filter:brightness(.8);
+}
+
+.hero-content{
     position:absolute;
-    width:400px;
-    height:400px;
-    background:radial-gradient(circle, rgba(255,0,0,.4), transparent);
-    top:-100px;
-    right:-100px;
+    bottom:30px;
+    left:30px;
+    color:white;
 }
 
-.hero h1{
-    font-size:60px;
+.hero-content h1{
+    font-size:50px;
     font-weight:900;
 }
 
-.hero p{
-    opacity:.8;
-    margin-top:10px;
+.hero-content p{
+    margin-top:8px;
+    opacity:.9;
 }
 
 /* GRID */
 .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:20px;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+    padding:30px;
 }
 
 .card{
-    background:#111;
-    padding:25px;
+    background:white;
     border-radius:20px;
-    border:1px solid rgba(255,0,0,.1);
+    overflow:hidden;
+    border:1px solid #eee;
     transition:.3s;
     cursor:pointer;
 }
 
 .card:hover{
-    transform:translateY(-8px) scale(1.02);
-    border-color:red;
-    box-shadow:0 20px 50px rgba(255,0,0,.25);
+    transform:translateY(-6px);
+    box-shadow:0 15px 40px rgba(0,0,0,.1);
 }
 
-/* PAGE SWITCH */
+.card img{
+    width:100%;
+    height:160px;
+    object-fit:cover;
+}
+
+.card-content{
+    padding:20px;
+}
+
+.card-content h2{
+    font-size:20px;
+    margin-bottom:6px;
+}
+
+.card-content p{
+    color:#555;
+}
+
+/* PAGE */
 .page{display:none;}
 .page.active{display:block;}
 
@@ -130,89 +147,119 @@ iframe{
     height:90vh;
     border:none;
     border-radius:20px;
-    background:black;
+    background:white;
+    margin:20px;
 }
+
+/* SECTION TITLE */
+.section-title{
+    font-size:28px;
+    font-weight:900;
+    padding:20px 30px 0;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="sidebar">
+<!-- NAV -->
+<nav>
     <div class="logo">
         <img src="logo.png">
         <h1>RPL</h1>
     </div>
 
-    <div class="nav">
-        <button onclick="openPage('home')">🏠 Home</button>
-        <button onclick="openPage('caps')">💰 Salary Caps</button>
-        <button onclick="openPage('database')">📊 Database</button>
-        <button onclick="openPage('picks')">🎯 PrizePicks</button>
-        <button onclick="openPage('stars')">⭐ Star System</button>
-        <button onclick="openPage('standings')">📈 Standings</button>
-        <button onclick="openPage('power')">🔥 Power Rankings</button>
-        <button onclick="openPage('awards')">🏆 Awards</button>
+    <div class="nav-links">
+        <button onclick="openPage('home')">Home</button>
+        <button onclick="openPage('caps')">Salary Caps</button>
+        <button onclick="openPage('database')">Database</button>
+        <button onclick="openPage('picks')">PrizePicks</button>
+        <button onclick="openPage('stars')">Star System</button>
+        <button onclick="openPage('standings')">Standings</button>
+        <button onclick="openPage('power')">Power Rankings</button>
+        <button onclick="openPage('awards')">Awards</button>
     </div>
-</div>
-
-<div class="main">
+</nav>
 
 <!-- HOME -->
 <div id="home" class="page active">
+
+    <!-- HERO IMAGE -->
     <div class="hero">
-        <h1>RPL SEASON 10</h1>
-        <p>Official League Hub • Contracts • Stats • Rankings</p>
+        <img src="hero.jpg"> <!-- REPLACE -->
+        <div class="hero-content">
+            <h1>RPL SEASON 10</h1>
+            <p>Official League Hub</p>
+        </div>
     </div>
 
+    <!-- MAIN CARDS -->
     <div class="grid">
+
         <div class="card" onclick="openPage('caps')">
-            <h2>Salary Caps</h2>
-            <p>Contracts, payroll, cap rules</p>
+            <img src="caps.jpg"> <!-- REPLACE -->
+            <div class="card-content">
+                <h2>Salary Caps</h2>
+                <p>View contracts, payroll & rules</p>
+            </div>
         </div>
 
         <div class="card" onclick="openPage('database')">
-            <h2>Player Database</h2>
-            <p>All players with ratings</p>
+            <img src="database.jpg">
+            <div class="card-content">
+                <h2>Player Database</h2>
+                <p>Browse all players & ratings</p>
+            </div>
         </div>
 
         <div class="card" onclick="openPage('picks')">
-            <h2>PrizePicks</h2>
-            <p>Submit daily picks</p>
+            <img src="picks.jpg">
+            <div class="card-content">
+                <h2>PrizePicks</h2>
+                <p>Submit your picks</p>
+            </div>
         </div>
 
         <div class="card">
-            <h2>Standings</h2>
-            <p>Coming soon</p>
+            <img src="standings.jpg">
+            <div class="card-content">
+                <h2>Standings</h2>
+                <p>Coming Soon</p>
+            </div>
         </div>
+
     </div>
 </div>
 
 <!-- CAPS -->
 <div id="caps" class="page">
+    <div class="section-title">Salary Caps</div>
     <iframe src="salary.html"></iframe>
 </div>
 
 <!-- DATABASE -->
 <div id="database" class="page">
+    <div class="section-title">Player Database</div>
     <iframe src="database.html"></iframe>
 </div>
 
 <!-- PICKS -->
 <div id="picks" class="page">
+    <div class="section-title">PrizePicks</div>
     <iframe src="picks.html"></iframe>
 </div>
 
 <!-- STAR SYSTEM -->
 <div id="stars" class="page">
+    <div class="section-title">Star System</div>
     <iframe src="stars.html"></iframe>
 </div>
 
 <!-- FUTURE -->
-<div id="standings" class="page"><h1>Coming Soon</h1></div>
-<div id="power" class="page"><h1>Coming Soon</h1></div>
-<div id="awards" class="page"><h1>Coming Soon</h1></div>
-
-</div>
+<div id="standings" class="page"><h1 style="padding:30px;">Coming Soon</h1></div>
+<div id="power" class="page"><h1 style="padding:30px;">Coming Soon</h1></div>
+<div id="awards" class="page"><h1 style="padding:30px;">Coming Soon</h1></div>
 
 <script>
 function openPage(id){
