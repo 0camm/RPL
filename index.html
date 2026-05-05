@@ -801,12 +801,16 @@
 <!-- ═══════════════════════════════════
      PAGE: Standings
 ═══════════════════════════════════ -->
-<div id="page-Standings" class="page iframe-page hidden">
-  <div class="iframe-loading" id="loading-Standings">
+<div id="page-salary" class="page iframe-page hidden">
+  <div class="iframe-loading" id="loading-salary">
     <div class="spinner"></div>
-    <p>Loading Standings…</p>
+    <p>Loading Salary Caps…</p>
   </div>
-  <iframe src="https://rplstandings.vercel.app/" title="Standings"></iframe>
+  <iframe
+    src="https://rplstandings.vercel.app/"
+    onload="document.getElementById('loading-salary').classList.add('done')"
+    title="Salary Caps">
+  </iframe>
 </div>
 
 
