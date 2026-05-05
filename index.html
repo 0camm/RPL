@@ -801,16 +801,26 @@
 <!-- ═══════════════════════════════════
      PAGE: Standings
 ═══════════════════════════════════ -->
-<div id="page-salary" class="page iframe-page hidden">
-  <div class="iframe-loading" id="loading-salary">
+<div id="page-database" class="page iframe-page hidden">
+  <div class="iframe-loading" id="loading-database">
     <div class="spinner"></div>
-    <p>Loading Salary Caps…</p>
+    <p>Loading Database…</p>
   </div>
+
   <iframe
+    id="databaseFrame"
     src="https://rplstandings.vercel.app/"
-    onload="document.getElementById('loading-salary').classList.add('done')"
-    title="Salary Caps">
+    title="Database">
   </iframe>
+
+  <!-- fallback button -->
+  <div id="database-fallback" style="display:none; text-align:center; margin-top:20px;">
+    <p style="color:white;">Database could not be embedded.</p>
+    <button onclick="window.open('https://rpldatabase.vercel.app/', '_blank')" 
+      style="padding:10px 20px; background:#e8001d; border:none; color:white; cursor:pointer;">
+      Open Database
+    </button>
+  </div>
 </div>
 
 
