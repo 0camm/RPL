@@ -758,7 +758,6 @@
 
 <!-- ═══════════════════════════════════
      PAGE: SALARY CAPS
-     🔗 PASTE YOUR URL BELOW (src="...")
 ═══════════════════════════════════ -->
 <div id="page-salary" class="page iframe-page hidden">
   <div class="iframe-loading" id="loading-salary">
@@ -773,42 +772,77 @@
 </div>
 
 
-<!-- DATABASE PAGE (FIXED) -->
+<!-- ═══════════════════════════════════
+     PAGE: DATABASE (FIXED)
+═══════════════════════════════════ -->
 <div id="page-database" class="page iframe-page hidden">
   <div class="iframe-loading" id="loading-database">
     <div class="spinner"></div>
     <p>Loading Database…</p>
   </div>
+
   <iframe
+    id="databaseFrame"
     src="https://rpldatabase.vercel.app/"
-    onload="document.getElementById('loading-database').classList.add('done')"
     title="Database">
   </iframe>
+
+  <!-- fallback button -->
+  <div id="database-fallback" style="display:none; text-align:center; margin-top:20px;">
+    <p style="color:white;">Database could not be embedded.</p>
+    <button onclick="window.open('https://rpldatabase.vercel.app/', '_blank')" 
+      style="padding:10px 20px; background:#e8001d; border:none; color:white; cursor:pointer;">
+      Open Database
+    </button>
+  </div>
 </div>
 
 
+<!-- ═══════════════════════════════════
+     PAGE: PRIZEPICKS
+═══════════════════════════════════ -->
 <div id="page-prizepicks" class="page iframe-page hidden">
   <div class="iframe-loading" id="loading-prizepicks">
     <div class="spinner"></div>
     <p>Loading PrizePicks…</p>
   </div>
-  <iframe
-    src="about:blank"
-    title="PrizePicks">
-  </iframe>
+  <iframe src="about:blank" title="PrizePicks"></iframe>
 </div>
 
 
+<!-- ═══════════════════════════════════
+     PAGE: STAR SYSTEM
+═══════════════════════════════════ -->
 <div id="page-starsystem" class="page iframe-page hidden">
   <div class="iframe-loading" id="loading-starsystem">
     <div class="spinner"></div>
     <p>Loading Star System…</p>
   </div>
-  <iframe
-    src="about:blank"
-    title="Star System">
-  </iframe>
+  <iframe src="about:blank" title="Star System"></iframe>
 </div>
+
+
+<!-- ═══════════════════════════════════
+     DATABASE FAIL DETECTION SCRIPT
+═══════════════════════════════════ -->
+<script id="dbfixscript">
+setTimeout(() => {
+  const iframe = document.getElementById("databaseFrame");
+  const loader = document.getElementById("loading-database");
+  const fallback = document.getElementById("database-fallback");
+
+  try {
+    // if iframe is still blank / blocked
+    if (!iframe.contentWindow || iframe.contentWindow.length === 0) {
+      throw "blocked";
+    }
+  } catch (e) {
+    // show fallback
+    loader.style.display = "none";
+    fallback.style.display = "block";
+  }
+}, 3000);
+</script>
 
 
 <script>
