@@ -787,7 +787,7 @@
     <button onclick="navigate('salary')"      data-page="salary">Salarys</button>
     <button onclick="navigate('database')"    data-page="database">Database</button>
     <button onclick="navigate('standings')"   data-page="standings">Standings</button>
-    <button onclick="navigate('starsystem')"  data-page="starsystem">History</button>
+    <button onclick="navigate('history')"  data-page="history">History</button>
     <button class="nav-cta" onclick="window.open('https://discord.com/invite/znF9Vnztff','_blank')">Join Now</button>
   </div>
 
@@ -803,7 +803,7 @@
   <button onclick="navigate('salary');closeMenu()"      data-page="salary">Salarys</button>
   <button onclick="navigate('database');closeMenu()"    data-page="database">Database</button>
   <button onclick="navigate('standings');closeMenu()"   data-page="standings">Standings</button>
-  <button onclick="navigate('starsystem');closeMenu()"  data-page="starsystem">History</button>
+  <button onclick="navigate('history');closeMenu()"  data-page="history">History</button>
   <button class="mobile-cta" onclick="window.open('https://discord.com/invite/znF9Vnztff','_blank');closeMenu()">Join Discord</button>
 </div>
 
@@ -1021,12 +1021,23 @@
 <!-- ═══════════════════════════════════
      PAGE: History
 ═══════════════════════════════════ -->
-<div id="page-starsystem" class="page iframe-page hidden">
-  <div class="iframe-loading" id="loading-starsystem">
+<div id="page-history" class="page iframe-page hidden">
+  <div class="iframe-loading" id="loading-history">
     <div class="spinner"></div>
     <p>Loading History…</p>
   </div>
-  <iframe src="about:blank" title="History"></iframe>
+  <iframe
+    src="https://rplhistory.vercel.app/"
+    onload="document.getElementById('loading-history').classList.add('done')"
+    title="Hisory">
+  </iframe>
+  <div id="Hisory-fallback" style="display:none; text-align:center; padding:40px 20px;">
+    <p style="color:#888; margin-bottom:16px;">Hisory could not be embedded.</p>
+    <button onclick="window.open('https://rplhistory.vercel.app/', '_blank')"
+      style="padding:12px 24px; background:#e8001d; border:none; color:white; cursor:pointer; border-radius:8px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px;">
+      Open Hisory
+    </button>
+  </div>
 </div>
 
 
