@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Official RPL Website</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="icon" href="rpllogo.png?v=2" type="image/png">
@@ -28,44 +28,49 @@
     font-size: 15px;
   }
 
-  /* ── HIDDEN UTILITY ── */
   .hidden { display: none !important; }
 
   /* ── NAV ── */
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
-    z-index: 100;
+    z-index: 200;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 48px;
-    height: 60px;
+    padding: 0 24px;
+    height: 56px;
     border-bottom: 1px solid var(--border);
-    background: rgba(6,6,8,.85);
+    background: rgba(6,6,8,.92);
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
   }
 
   .nav-logo {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     text-decoration: none;
     cursor: pointer;
   }
 
-  .nav-logo img { width: 30px; height: 30px; object-fit: contain; }
+  .nav-logo img { width: 28px; height: 28px; object-fit: contain; }
 
   .nav-logo span {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
+    font-size: 20px;
     letter-spacing: .06em;
     color: #fff;
   }
 
   .nav-logo span em { color: var(--red); font-style: normal; }
 
-  .nav-links { display: flex; gap: 6px; }
+  /* Desktop nav links */
+  .nav-links {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
 
   .nav-links button {
     background: none;
@@ -74,11 +79,12 @@
     font-family: 'DM Sans', sans-serif;
     font-size: 13px;
     font-weight: 500;
-    padding: 6px 14px;
+    padding: 6px 12px;
     border-radius: 6px;
     cursor: pointer;
     transition: color .2s, background .2s;
     letter-spacing: .02em;
+    white-space: nowrap;
   }
 
   .nav-links button:hover { color: #fff; background: rgba(255,255,255,.06); }
@@ -91,15 +97,80 @@
 
   .nav-cta:hover { background: #c8001a !important; }
 
-  /* ══════════════════════════════════════
-     PAGE WRAPPER — all pages sit here
-  ══════════════════════════════════════ */
+  /* Mobile hamburger */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 6px;
+    border-radius: 6px;
+  }
+
+  .nav-hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: transform .25s, opacity .25s;
+  }
+
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* Mobile menu drawer */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 56px; left: 0; right: 0;
+    z-index: 190;
+    background: rgba(6,6,8,.97);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 16px;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .mobile-menu.open { display: flex; }
+
+  .mobile-menu button {
+    background: none;
+    border: none;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 12px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+    transition: background .2s;
+  }
+
+  .mobile-menu button:hover { background: rgba(255,255,255,.06); }
+  .mobile-menu button.active { background: rgba(255,255,255,.08); color: #fff; }
+
+  .mobile-menu .mobile-cta {
+    background: var(--red) !important;
+    color: #fff !important;
+    text-align: center !important;
+    margin-top: 8px;
+    font-weight: 600 !important;
+  }
+
+  /* PAGE WRAPPER */
   .page { display: block; }
 
-  /* ── IFRAME PAGES ── */
+  /* IFRAME PAGES */
   .iframe-page {
     position: fixed;
-    top: 60px; /* below nav */
+    top: 56px;
     left: 0; right: 0; bottom: 0;
     z-index: 50;
   }
@@ -111,7 +182,6 @@
     display: block;
   }
 
-  /* loading state for iframes */
   .iframe-loading {
     position: absolute;
     inset: 0;
@@ -150,10 +220,10 @@
   .hero {
     position: relative;
     height: 100vh;
-    min-height: 600px;
+    min-height: 500px;
     display: flex;
     align-items: flex-end;
-    padding: 0 48px 80px;
+    padding: 0 24px 64px;
     overflow: hidden;
   }
 
@@ -179,7 +249,7 @@
       linear-gradient(to right, rgba(6,6,8,.8) 0%, transparent 60%);
   }
 
-  .hero-content { position: relative; z-index: 1; max-width: 640px; }
+  .hero-content { position: relative; z-index: 1; max-width: 640px; width: 100%; }
 
   .hero-eyebrow {
     display: inline-flex;
@@ -190,36 +260,36 @@
     letter-spacing: .12em;
     text-transform: uppercase;
     color: var(--red);
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
 
   .hero-eyebrow::before {
     content: '';
-    width: 24px; height: 2px;
+    width: 20px; height: 2px;
     background: var(--red);
     border-radius: 2px;
   }
 
   .hero h1 {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(72px, 10vw, 120px);
+    font-size: clamp(58px, 14vw, 120px);
     line-height: .92;
     letter-spacing: .02em;
     color: #fff;
-    margin-bottom: 24px;
+    margin-bottom: 18px;
   }
 
   .hero h1 span { color: var(--red); }
 
   .hero-sub {
     color: #888;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.7;
     max-width: 420px;
-    margin-bottom: 36px;
+    margin-bottom: 28px;
   }
 
-  .hero-actions { display: flex; gap: 12px; align-items: center; }
+  .hero-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 
   .btn-primary {
     display: inline-flex;
@@ -231,7 +301,7 @@
     font-weight: 600;
     font-size: 13px;
     letter-spacing: .04em;
-    padding: 12px 24px;
+    padding: 12px 22px;
     border-radius: 8px;
     transition: background .2s, transform .15s;
   }
@@ -246,7 +316,7 @@
     text-decoration: none;
     font-weight: 500;
     font-size: 13px;
-    padding: 12px 20px;
+    padding: 12px 18px;
     border-radius: 8px;
     border: 1px solid var(--border);
     transition: color .2s, border-color .2s;
@@ -254,20 +324,21 @@
 
   .btn-ghost:hover { color: #fff; border-color: rgba(255,255,255,.18); }
 
+  /* Hero stats — right side on desktop, bottom-left strip on mobile */
   .hero-stats {
     position: absolute;
     right: 48px; bottom: 80px;
     z-index: 1;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 0;
     text-align: right;
   }
 
   .hero-stat-item {
     display: flex;
     flex-direction: column;
-    padding: 16px 0;
+    padding: 14px 0;
     border-bottom: 1px solid var(--border);
   }
 
@@ -275,18 +346,18 @@
 
   .hero-stat-num {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 36px;
+    font-size: 32px;
     color: #fff;
     letter-spacing: .04em;
     line-height: 1;
   }
 
   .hero-stat-label {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--muted);
     letter-spacing: .08em;
     text-transform: uppercase;
-    margin-top: 4px;
+    margin-top: 3px;
   }
 
   /* REVEAL */
@@ -303,7 +374,7 @@
     overflow: hidden;
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
-    padding: 14px 0;
+    padding: 12px 0;
     background: var(--surface);
   }
 
@@ -315,10 +386,10 @@
 
   .marquee-track span {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     letter-spacing: .15em;
     color: var(--muted);
-    padding: 0 32px;
+    padding: 0 24px;
   }
 
   .marquee-track span.accent { color: var(--red); }
@@ -338,7 +409,7 @@
   }
 
   .status-item {
-    padding: 32px 48px;
+    padding: 24px 32px;
     border-right: 1px solid var(--border);
   }
 
@@ -350,12 +421,12 @@
     letter-spacing: .12em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 
   .status-value {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 32px;
+    font-size: 28px;
     letter-spacing: .04em;
     color: #fff;
   }
@@ -371,7 +442,6 @@
     letter-spacing: .06em;
     padding: 4px 10px;
     border-radius: 20px;
-    margin-top: 4px;
   }
 
   .status-badge::before {
@@ -388,7 +458,7 @@
   }
 
   /* SECTION */
-  section { padding: 100px 48px; }
+  section { padding: 80px 24px; }
 
   .section-label {
     display: flex;
@@ -399,23 +469,23 @@
     letter-spacing: .12em;
     text-transform: uppercase;
     color: var(--red);
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
   .section-label::before {
     content: '';
-    width: 20px; height: 2px;
+    width: 18px; height: 2px;
     background: var(--red);
     border-radius: 2px;
   }
 
   .section-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(38px, 5vw, 58px);
+    font-size: clamp(34px, 7vw, 58px);
     letter-spacing: .03em;
     line-height: 1;
     color: #fff;
-    margin-bottom: 48px;
+    margin-bottom: 36px;
   }
 
   /* HUB CARDS */
@@ -427,7 +497,7 @@
 
   .hub-card {
     position: relative;
-    height: 280px;
+    height: 240px;
     overflow: hidden;
     cursor: pointer;
     background: var(--surface);
@@ -454,7 +524,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 24px;
+    padding: 20px;
     background: linear-gradient(to top, rgba(6,6,8,.9) 0%, transparent 60%);
   }
 
@@ -464,20 +534,20 @@
     letter-spacing: .12em;
     text-transform: uppercase;
     color: var(--red);
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
 
   .hub-card-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
+    font-size: 20px;
     letter-spacing: .04em;
     color: #fff;
   }
 
   .hub-card-arrow {
     position: absolute;
-    top: 20px; right: 20px;
-    width: 32px; height: 32px;
+    top: 16px; right: 16px;
+    width: 28px; height: 28px;
     border: 1px solid rgba(255,255,255,.15);
     border-radius: 50%;
     display: flex;
@@ -504,12 +574,12 @@
   }
 
   .link-card {
-    padding: 52px 48px;
+    padding: 40px 32px;
     background: var(--bg);
     text-decoration: none;
     display: flex;
     align-items: flex-start;
-    gap: 24px;
+    gap: 20px;
     border: 1px solid transparent;
     transition: border-color .25s, background .25s;
     cursor: pointer;
@@ -518,8 +588,8 @@
   .link-card:hover { background: #0b0b0e; border-color: var(--border); }
 
   .link-icon {
-    width: 48px; height: 48px;
-    border-radius: 12px;
+    width: 44px; height: 44px;
+    border-radius: 10px;
     background: var(--red-dim);
     display: flex;
     align-items: center;
@@ -529,16 +599,16 @@
   }
 
   .link-card:hover .link-icon { background: rgba(232,0,29,.22); }
-  .link-icon svg { width: 22px; height: 22px; fill: var(--red); }
+  .link-icon svg { width: 20px; height: 20px; fill: var(--red); }
 
   .link-body { flex: 1; }
 
   .link-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
+    font-size: 24px;
     letter-spacing: .04em;
     color: #fff;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
   .link-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
@@ -547,35 +617,37 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    margin-top: 20px;
-    font-size: 12px;
+    margin-top: 16px;
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: .06em;
     text-transform: uppercase;
     color: var(--red);
   }
 
-  .link-action svg { width: 12px; height: 12px; }
+  .link-action svg { width: 11px; height: 11px; }
 
   /* FOOTER */
   footer {
-    padding: 40px 48px;
+    padding: 32px 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 12px;
   }
 
   .footer-logo {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 16px;
+    font-size: 15px;
     letter-spacing: .1em;
     color: var(--muted);
   }
 
   .footer-copy { font-size: 12px; color: #333; }
 
-  .footer-links { display: flex; gap: 20px; }
+  .footer-links { display: flex; gap: 16px; }
 
   .footer-links a {
     font-size: 12px;
@@ -585,6 +657,117 @@
   }
 
   .footer-links a:hover { color: #888; }
+
+  /* ═══════════════════════════
+     MOBILE BREAKPOINTS
+  ═══════════════════════════ */
+  @media (max-width: 768px) {
+    /* Nav */
+    nav { padding: 0 16px; }
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+
+    /* Hero */
+    .hero {
+      padding: 0 16px 56px;
+      min-height: 100svh;
+      align-items: flex-end;
+    }
+
+    .hero h1 { font-size: clamp(52px, 16vw, 80px); margin-bottom: 14px; }
+    .hero-sub { font-size: 13px; margin-bottom: 22px; }
+
+    .hero-actions { gap: 8px; }
+    .btn-primary, .btn-ghost { font-size: 12px; padding: 10px 16px; }
+
+    /* Stats — hide on mobile or move inline */
+    .hero-stats {
+      display: none;
+    }
+
+    /* Status bar — 2x2 grid on mobile */
+    .status-bar {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .status-item {
+      padding: 18px 16px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .status-item:nth-child(2) { border-right: none; }
+    .status-item:nth-child(3) { border-bottom: none; }
+    .status-item:nth-child(4) { border-right: none; border-bottom: none; }
+
+    .status-value { font-size: 24px; }
+
+    /* Section */
+    section { padding: 56px 16px; }
+
+    /* Hub grid — single column on mobile */
+    .hub-grid {
+      grid-template-columns: 1fr;
+      gap: 3px;
+    }
+
+    .hub-card { height: 160px; }
+    .hub-card:first-child { border-radius: 12px 12px 0 0; }
+    .hub-card:last-child  { border-radius: 0 0 12px 12px; }
+
+    /* Links — stack on mobile */
+    .links-grid { grid-template-columns: 1fr; }
+
+    .link-card {
+      padding: 28px 20px;
+      gap: 16px;
+    }
+
+    .link-title { font-size: 22px; }
+    .link-desc { font-size: 12px; }
+    .link-icon { width: 40px; height: 40px; border-radius: 8px; }
+    .link-icon svg { width: 18px; height: 18px; }
+
+    /* Footer */
+    footer {
+      padding: 24px 16px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero { padding: 0 16px 48px; }
+    .hero h1 { font-size: clamp(48px, 17vw, 72px); }
+
+    .marquee-track span { font-size: 11px; padding: 0 18px; }
+
+    .section-title { font-size: 32px; }
+  }
+
+  /* Tablets — 2-col hub */
+  @media (min-width: 769px) and (max-width: 1024px) {
+    nav { padding: 0 32px; }
+    .nav-links button { padding: 6px 10px; font-size: 12px; }
+
+    section { padding: 80px 32px; }
+
+    .status-item { padding: 24px 24px; }
+
+    .hub-grid { grid-template-columns: 1fr 1fr; }
+    .hub-card:nth-child(2) { border-radius: 0 12px 12px 0; }
+    .hub-card:last-child  { 
+      grid-column: 1 / -1; 
+      height: 200px;
+      border-radius: 0 0 12px 12px;
+    }
+    .hub-card:first-child { border-radius: 12px 0 0 0; }
+
+    .link-card { padding: 36px 28px; }
+
+    footer { padding: 32px 32px; }
+  }
 </style>
 </head>
 <body>
@@ -597,21 +780,38 @@
     <img src="rpllogo.png" alt="RPL">
     <span>Revolutionary <em>Pro League</em></span>
   </div>
+
+  <!-- Desktop links -->
   <div class="nav-links">
     <button onclick="navigate('home')"        data-page="home"       class="active">Home</button>
     <button onclick="navigate('salary')"      data-page="salary">Salary Caps</button>
     <button onclick="navigate('database')"    data-page="database">Database</button>
-    <button onclick="navigate('standings')" data-page="standings">Standings</button>
+    <button onclick="navigate('standings')"   data-page="standings">Standings</button>
     <button onclick="navigate('starsystem')"  data-page="starsystem">Star System</button>
     <button class="nav-cta" onclick="window.open('https://discord.com/invite/znF9Vnztff','_blank')">Join Now</button>
   </div>
+
+  <!-- Mobile hamburger -->
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- Mobile Menu Drawer -->
+<div class="mobile-menu" id="mobileMenu">
+  <button onclick="navigate('home');closeMenu()"        data-page="home"      class="active">Home</button>
+  <button onclick="navigate('salary');closeMenu()"      data-page="salary">Salary Caps</button>
+  <button onclick="navigate('database');closeMenu()"    data-page="database">Database</button>
+  <button onclick="navigate('standings');closeMenu()"   data-page="standings">Standings</button>
+  <button onclick="navigate('starsystem');closeMenu()"  data-page="starsystem">Star System</button>
+  <button class="mobile-cta" onclick="window.open('https://discord.com/invite/znF9Vnztff','_blank');closeMenu()">Join Discord</button>
+</div>
 
 
 <!-- ═══════════════════════════════════
      PAGE: HOME
 ═══════════════════════════════════ -->
-<div id="page-home" class="page" style="padding-top:60px;">
+<div id="page-home" class="page" style="padding-top:56px;">
 
   <!-- HERO -->
   <div class="hero">
@@ -773,25 +973,22 @@
 
 
 <!-- ═══════════════════════════════════
-     PAGE: DATABASE (FIXED)
+     PAGE: DATABASE
 ═══════════════════════════════════ -->
 <div id="page-database" class="page iframe-page hidden">
   <div class="iframe-loading" id="loading-database">
     <div class="spinner"></div>
     <p>Loading Database…</p>
   </div>
-
   <iframe
     id="databaseFrame"
     src="https://rpldatabase.vercel.app/"
     title="Database">
   </iframe>
-
-  <!-- fallback button -->
-  <div id="database-fallback" style="display:none; text-align:center; margin-top:20px;">
-    <p style="color:white;">Database could not be embedded.</p>
-    <button onclick="window.open('https://rpldatabase.vercel.app/', '_blank')" 
-      style="padding:10px 20px; background:#e8001d; border:none; color:white; cursor:pointer;">
+  <div id="database-fallback" style="display:none; text-align:center; padding:40px 20px;">
+    <p style="color:#888; margin-bottom:16px;">Database could not be embedded.</p>
+    <button onclick="window.open('https://rpldatabase.vercel.app/', '_blank')"
+      style="padding:12px 24px; background:#e8001d; border:none; color:white; cursor:pointer; border-radius:8px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px;">
       Open Database
     </button>
   </div>
@@ -799,24 +996,22 @@
 
 
 <!-- ═══════════════════════════════════
-     PAGE: STANDINGS (FIXED)
+     PAGE: STANDINGS
 ═══════════════════════════════════ -->
 <div id="page-standings" class="page iframe-page hidden">
   <div class="iframe-loading" id="loading-standings">
     <div class="spinner"></div>
     <p>Loading Standings…</p>
   </div>
-
   <iframe
     src="https://rplstandings-xy1d.vercel.app/"
     onload="document.getElementById('loading-standings').classList.add('done')"
     title="Standings">
   </iframe>
-
-  <div id="standings-fallback" style="display:none; text-align:center; margin-top:20px;">
-    <p style="color:white;">Standings could not be embedded.</p>
-    <button onclick="window.open('https://rplstandings-xy1d.vercel.app/', '_blank')" 
-      style="padding:10px 20px; background:#e8001d; border:none; color:white; cursor:pointer;">
+  <div id="standings-fallback" style="display:none; text-align:center; padding:40px 20px;">
+    <p style="color:#888; margin-bottom:16px;">Standings could not be embedded.</p>
+    <button onclick="window.open('https://rplstandings-xy1d.vercel.app/', '_blank')"
+      style="padding:12px 24px; background:#e8001d; border:none; color:white; cursor:pointer; border-radius:8px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:14px;">
       Open Standings
     </button>
   </div>
@@ -835,59 +1030,69 @@
 </div>
 
 
-<!-- ═══════════════════════════════════
-     DATABASE FAIL DETECTION SCRIPT
-═══════════════════════════════════ -->
-<script id="dbfixscript">
-setTimeout(() => {
-  const iframe = document.getElementById("databaseFrame");
-  const loader = document.getElementById("loading-database");
-  const fallback = document.getElementById("database-fallback");
-
-  try {
-    // if iframe is still blank / blocked
-    if (!iframe.contentWindow || iframe.contentWindow.length === 0) {
-      throw "blocked";
-    }
-  } catch (e) {
-    // show fallback
-    loader.style.display = "none";
-    fallback.style.display = "block";
-  }
-}, 3000);
-</script>
-
-
 <script>
+  /* DATABASE FAIL DETECTION */
+  setTimeout(() => {
+    const iframe = document.getElementById("databaseFrame");
+    const loader = document.getElementById("loading-database");
+    const fallback = document.getElementById("database-fallback");
+    try {
+      if (!iframe.contentWindow || iframe.contentWindow.length === 0) throw "blocked";
+    } catch (e) {
+      loader.style.display = "none";
+      fallback.style.display = "block";
+    }
+  }, 3000);
+
   /* ══════════════════════════════════════
-     NAVIGATION — swap pages, highlight tab
+     NAVIGATION
   ══════════════════════════════════════ */
   function navigate(page) {
-    // hide all pages
     document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
 
-    // show target page
     const target = document.getElementById('page-' + page);
     if (target) target.classList.remove('hidden');
 
-    // lazy-load iframe if it hasn't loaded yet
     const iframe = target && target.querySelector('iframe[data-src]');
     if (iframe) {
       iframe.src = iframe.dataset.src;
       iframe.removeAttribute('data-src');
     }
 
-    // update active nav button
-    document.querySelectorAll('.nav-links button[data-page]').forEach(btn => {
+    // Update both desktop and mobile nav active states
+    document.querySelectorAll('[data-page]').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.page === page);
     });
 
-    // scroll home page to top when returning
     if (page === 'home') window.scrollTo(0, 0);
   }
 
   /* ══════════════════════════════════════
-     HERO BG subtle zoom-out on load
+     MOBILE MENU
+  ══════════════════════════════════════ */
+  function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const hamburger = document.getElementById('hamburger');
+    menu.classList.toggle('open');
+    hamburger.classList.toggle('open');
+  }
+
+  function closeMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+  }
+
+  // Close menu on outside tap
+  document.addEventListener('click', (e) => {
+    const menu = document.getElementById('mobileMenu');
+    const hamburger = document.getElementById('hamburger');
+    if (menu.classList.contains('open') && !menu.contains(e.target) && !hamburger.contains(e.target)) {
+      closeMenu();
+    }
+  });
+
+  /* ══════════════════════════════════════
+     HERO BG
   ══════════════════════════════════════ */
   window.addEventListener('load', () => {
     const bg = document.getElementById('heroBg');
@@ -905,7 +1110,7 @@ setTimeout(() => {
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.12 });
+  }, { threshold: 0.08 });
 
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
