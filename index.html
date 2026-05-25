@@ -748,23 +748,18 @@
 <!-- ═══════════════════════════
      PAGE: DATABASE
 ═══════════════════════════ -->
+
 <div id="page-database" class="page iframe-page hidden">
   <div class="iframe-loading" id="loading-database">
     <div class="spinner"></div>
     <p>Loading Database…</p>
   </div>
   <iframe
-    id="databaseFrame"
     src="https://rpldatabase.vercel.app/"
     onload="document.getElementById('loading-database').classList.add('done')"
-    title="Database">
+    title="database">
   </iframe>
-  <div id="database-fallback" style="display:none; position:absolute; inset:0; display:none; align-items:center; justify-content:center; flex-direction:column; gap:16px;">
-    <p style="font-size:13px; color:var(--muted);">Database could not be embedded.</p>
-    <button onclick="window.open('https://rpldatabase.vercel.app/','_blank')" class="btn-primary">Open Database</button>
-  </div>
 </div>
-
 
 <!-- ═══════════════════════════
      PAGE: STANDINGS
