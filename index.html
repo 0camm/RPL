@@ -354,23 +354,45 @@
   }
   .hero-dot:hover:not(.active) { background: rgba(255,255,255,.45); transform: scale(1.2); }
 
-  /* ── SLIDE CAPTION (bottom-right, fades with slide) ── */
-  .hero-caption {
+  /* ── SLIDE PLAYER CAPTION (bottom-right) ── */
+  .hero-player-caption {
     position: absolute;
-    bottom: 80px; right: 52px;
+    bottom: 52px; right: 52px;
     z-index: 3;
     text-align: right;
     pointer-events: none;
+    display: flex; flex-direction: column; align-items: flex-end; gap: 3px;
   }
-  .hero-caption-text {
-    font-size: 9px; font-weight: 600; letter-spacing: .14em;
-    text-transform: uppercase; color: rgba(255,255,255,.22);
+  .hero-player-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(22px, 3.5vw, 36px);
+    letter-spacing: .06em; line-height: 1;
+    color: #fff;
     opacity: 0;
-    transform: translateY(4px);
-    transition: opacity .5s ease, transform .5s ease;
+    transform: translateY(10px);
+    transition: opacity .55s ease .15s, transform .55s ease .15s;
   }
-  .hero-caption-text.visible {
-    opacity: 1; transform: none;
+  .hero-player-role {
+    font-size: 9px; font-weight: 700; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--red);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .55s ease .3s, transform .55s ease .3s;
+  }
+  .hero-player-line {
+    width: 0; height: 1px;
+    background: var(--red);
+    opacity: 0;
+    transition: width .5s ease .05s, opacity .3s ease .05s;
+    align-self: flex-end;
+  }
+  .hero-player-caption.visible .hero-player-name,
+  .hero-player-caption.visible .hero-player-role { opacity: 1; transform: none; }
+  .hero-player-caption.visible .hero-player-line  { width: 100%; opacity: 1; }
+
+  @media (max-width: 640px) {
+    .hero-player-caption { bottom: 48px; right: 16px; }
+    .hero-player-name    { font-size: clamp(18px, 6vw, 28px); }
   }
 
   /* MARQUEE */
@@ -710,6 +732,13 @@
       </div>
     </div>
 
+    <!-- PLAYER CAPTION -->
+    <div class="hero-player-caption" id="heroPlayerCaption">
+      <div class="hero-player-line" id="heroPlayerLine"></div>
+      <div class="hero-player-name" id="heroPlayerName"></div>
+      <div class="hero-player-role" id="heroPlayerRole"></div>
+    </div>
+
     <!-- SLIDE INDICATORS -->
     <div class="hero-indicators" id="heroIndicators"></div>
 
@@ -916,11 +945,11 @@
      kb options: 'kb-in' | 'kb-out' | 'kb-left' | 'kb-right'
   ────────────────────────────────────────── */
   const SLIDES = [
-    { src: 'LEBRONHEROBG.png',  label: 'Season 11',        kb: 'kb-in'    },
-    { src: 'SGAHEROBG.png',       label: 'Team Database',    kb: 'kb-right' },
-    { src: 'JALENJOHNSONHEROBG.png',     label: 'Salary System',    kb: 'kb-out'   },
-    { src: 'JOKICHEROBG.png',      label: 'Star System',      kb: 'kb-left'  },
-    { src: 'KYRIEHEROBG.png',       label: 'Live Standings',   kb: 'kb-in'    },
+    { src: 'JALENJOHNSONHEROBG.png', name: 'Jalen Johnson',  role: 'Forward · ATL Hawks',      kb: 'kb-in'    },
+    { src: 'JOKICHEROBG.png',        name: 'Nikola Jokić',   role: 'Center · Denver Nuggets',   kb: 'kb-right' },
+    { src: 'KYRIEHEROBG.png',        name: 'Kyrie Irving',   role: 'Guard · Dallas Mavericks',  kb: 'kb-out'   },
+    { src: 'SGAHEROBG.png',          name: 'SGA',            role: 'Guard · OKC Thunder',       kb: 'kb-left'  },
+    { src: 'LEBRONHEROBG.png',       name: 'LeBron James',   role: 'Forward · LA Lakers',       kb: 'kb-in'    },
   ];
 
   const INTERVAL   = 6000;   // ms between slides
@@ -932,6 +961,21 @@
 
   const slidesEl     = document.getElementById('heroSlides');
   const indicatorsEl = document.getElementById('heroIndicators');
+  const captionEl    = document.getElementById('heroPlayerCaption');
+  const captionName  = document.getElementById('heroPlayerName');
+  const captionRole  = document.getElementById('heroPlayerRole');
+
+  function updateCaption(index) {
+    const s = SLIDES[index];
+    /* Snap out */
+    captionEl.classList.remove('visible');
+    /* After exit transition, update text and snap back in */
+    setTimeout(() => {
+      captionName.textContent = s.name  || '';
+      captionRole.textContent = s.role  || '';
+      if (s.name) captionEl.classList.add('visible');
+    }, 350);
+  }
 
   /* Build slide DOM */
   const slideDivs = SLIDES.map((s, i) => {
@@ -979,6 +1023,7 @@
     /* Update dots */
     dots[prev].classList.remove('active');
     dots[next].classList.add('active');
+    updateCaption(next);
 
     currentSlide = next;
   }
@@ -1015,6 +1060,7 @@
   /* Init first slide */
   slideDivs[0].classList.add('active', SLIDES[0].kb);
   dots[0].classList.add('active');
+  setTimeout(() => updateCaption(0), 600);
   startTimer();
 
   /* Preload all images eagerly */
