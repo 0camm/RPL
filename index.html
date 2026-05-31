@@ -114,6 +114,10 @@
   .nav-center button:hover { color: var(--text); background: rgba(255,255,255,.05); }
   .nav-center button.active { color: #fff; background: rgba(255,255,255,.07); }
 
+  /* Stars nav button gets a subtle gold tint */
+  .nav-center button[data-page="stars"] { color: #c9a84c; }
+  .nav-center button[data-page="stars"]:hover { color: #f5c842; background: rgba(245,158,11,.08); }
+
   .nav-right { display: flex; align-items: center; gap: 10px; }
 
   .nav-cta {
@@ -164,6 +168,9 @@
   }
   .mobile-menu button:hover  { background: rgba(255,255,255,.05); }
   .mobile-menu button.active { background: rgba(255,255,255,.07); color: #fff; }
+  .mobile-menu .m-stars {
+    color: #c9a84c !important;
+  }
   .mobile-menu .m-cta {
     background: var(--red) !important;
     color: #fff !important;
@@ -378,10 +385,10 @@
     color: #fff; margin-bottom: 28px;
   }
 
-  /* HUB CARDS */
+  /* HUB CARDS — 4 columns */
   .hub-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 2px;
   }
 
@@ -406,6 +413,11 @@
     transform: scale(1.04);
   }
 
+  /* Stars card gets a gold tint on hover */
+  .hub-card.hub-stars:hover img {
+    filter: brightness(.45) saturate(1.1) sepia(.3);
+  }
+
   .hub-card-overlay {
     position: absolute; inset: 0;
     display: flex; flex-direction: column; justify-content: flex-end;
@@ -417,6 +429,8 @@
     font-size: 10px; font-weight: 700; letter-spacing: .12em;
     text-transform: uppercase; color: var(--red); margin-bottom: 4px;
   }
+  .hub-card.hub-stars .hub-card-tag { color: #c9a84c; }
+
   .hub-card-name {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 18px; letter-spacing: .04em; color: #fff;
@@ -432,6 +446,20 @@
     transition: opacity .22s, transform .22s;
   }
   .hub-card:hover .hub-card-arrow { opacity: 1; transform: translateY(0); }
+
+  /* external link badge on Stars card */
+  .hub-ext-badge {
+    position: absolute; top: 12px; left: 14px;
+    font-size: 8px; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 2px 6px; border-radius: 4px;
+    background: rgba(245,158,11,.18);
+    border: 1px solid rgba(245,158,11,.3);
+    color: #c9a84c;
+    opacity: 0;
+    transition: opacity .22s;
+  }
+  .hub-card:hover .hub-ext-badge { opacity: 1; }
 
   /* COMMUNITY LINKS */
   .links-section {
@@ -517,10 +545,13 @@
     .status-item:nth-child(2) { border-right: none; }
     .status-item:nth-child(3) { border-bottom: none; }
     .status-item:nth-child(4) { border-right: none; border-bottom: none; }
-    .hub-grid { grid-template-columns: 1fr; gap: 2px; }
-    .hub-card:first-child { border-radius: 10px 10px 0 0; }
-    .hub-card:last-child  { border-radius: 0 0 10px 10px; }
-    .hub-card { height: 160px; }
+    /* 4 cards → 2×2 grid on mobile */
+    .hub-grid { grid-template-columns: 1fr 1fr; gap: 2px; }
+    .hub-card:first-child { border-radius: 10px 0 0 0; }
+    .hub-card:nth-child(2) { border-radius: 0 10px 0 0; }
+    .hub-card:nth-child(3) { border-radius: 0 0 0 10px; }
+    .hub-card:last-child  { border-radius: 0 0 10px 0; }
+    .hub-card { height: 140px; }
     .links-grid { grid-template-columns: 1fr; }
     .link-card { padding: 26px 18px; gap: 14px; }
     .section { padding: 48px 16px; }
@@ -550,6 +581,7 @@
     <button onclick="navigate('database')"  data-page="database">Database</button>
     <button onclick="navigate('standings')" data-page="standings">Standings</button>
     <button onclick="navigate('history')"   data-page="history">History</button>
+    <button onclick="openStars()"           data-page="stars">Stars</button>
   </div>
 
   <div class="nav-right">
@@ -570,6 +602,7 @@
   <button onclick="navigate('database');closeMenu()"  data-page="database">Database</button>
   <button onclick="navigate('standings');closeMenu()" data-page="standings">Standings</button>
   <button onclick="navigate('history');closeMenu()"   data-page="history">History</button>
+  <button onclick="openStars();closeMenu()" class="m-stars" data-page="stars">⭐ Stars</button>
   <button class="m-cta" onclick="window.open('https://discord.com/invite/znF9Vnztff','_blank');closeMenu()">Join Discord</button>
 </div>
 
@@ -620,6 +653,7 @@
       <span>Standings Live</span><span class="accent">●</span>
       <span>History Active</span><span class="accent">●</span>
       <span>Salary System</span><span class="accent">●</span>
+      <span>Star System</span><span class="accent">●</span>
       <span>Roblox Basketball</span><span class="accent">●</span>
       <span>RPL Season 11</span><span class="accent">●</span>
       <span>30 Franchises</span><span class="accent">●</span>
@@ -627,6 +661,7 @@
       <span>Standings Live</span><span class="accent">●</span>
       <span>History Active</span><span class="accent">●</span>
       <span>Salary System</span><span class="accent">●</span>
+      <span>Star System</span><span class="accent">●</span>
       <span>Roblox Basketball</span><span class="accent">●</span>
     </div>
   </div>
@@ -682,6 +717,17 @@
           <div class="hub-card-tag">Live</div>
           <div class="hub-card-name">Standings</div>
         </div>
+        <div class="hub-card-arrow">
+          <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+      <div class="hub-card hub-stars" onclick="openStars()">
+        <img src="rpl banner 3.png" alt="Star System" loading="lazy">
+        <div class="hub-card-overlay">
+          <div class="hub-card-tag">Ratings</div>
+          <div class="hub-card-name">Star System</div>
+        </div>
+        <div class="hub-ext-badge">Opens new tab</div>
         <div class="hub-card-arrow">
           <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
@@ -851,6 +897,14 @@
   }, { threshold: 0.07 });
 
   document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+  /* STARS — opens in new tab.
+     Discord OAuth uses redirects that cannot work inside an iframe
+     (the callback URL would resolve inside the frame, not the parent page).
+     Opening a dedicated tab is the correct UX for OAuth flows. */
+  function openStars() {
+    window.open('https://rpstarsystem.vercel.app/', '_blank', 'noopener');
+  }
 </script>
 
 </body>
