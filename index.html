@@ -164,9 +164,7 @@
   }
   .mobile-menu button:hover  { background: rgba(255,255,255,.05); }
   .mobile-menu button.active { background: rgba(255,255,255,.07); color: #fff; }
-  .mobile-menu .m-stars {
-    color: #c9a84c !important;
-  }
+  .mobile-menu .m-stars { color: #c9a84c !important; }
   .mobile-menu .m-cta {
     background: var(--red) !important;
     color: #fff !important;
@@ -209,7 +207,7 @@
   ═══════════════════════ */
   #page-home { padding-top: 52px; }
 
-  /* HERO */
+  /* ── HERO SLIDESHOW ── */
   .hero {
     position: relative;
     min-height: calc(100vh - 52px);
@@ -218,25 +216,55 @@
     overflow: hidden;
   }
 
-  .hero-bg {
+  /* Slideshow container — holds all slides stacked */
+  .hero-slides {
     position: absolute; inset: 0;
-    background-image: url('jalenjohnsonrpl.png');
+    z-index: 0;
+  }
+
+  /* Each slide */
+  .hero-slide {
+    position: absolute; inset: 0;
     background-size: cover;
     background-position: center top;
+    opacity: 0;
+    /* Ken Burns: each slide animates its own zoom direction */
+    animation: none;
+    transition: opacity 1.6s cubic-bezier(.4,0,.2,1);
     filter: brightness(.18) saturate(.7);
-    transform: scale(1.03);
-    transition: transform 14s ease;
+    will-change: opacity, transform;
   }
-  .hero-bg.loaded { transform: scale(1); }
+  .hero-slide.active {
+    opacity: 1;
+  }
+
+  /* Ken Burns zoom variants — assigned per slide */
+  .hero-slide.active.kb-in   { animation: kbZoomIn  7s ease forwards; }
+  .hero-slide.active.kb-out  { animation: kbZoomOut 7s ease forwards; }
+  .hero-slide.active.kb-left { animation: kbLeft    7s ease forwards; }
+  .hero-slide.active.kb-right{ animation: kbRight   7s ease forwards; }
+
+  @keyframes kbZoomIn  { from { transform: scale(1);    } to { transform: scale(1.08); } }
+  @keyframes kbZoomOut { from { transform: scale(1.08); } to { transform: scale(1);    } }
+  @keyframes kbLeft    { from { transform: scale(1.05) translateX(0);      } to { transform: scale(1.05) translateX(-3%); } }
+  @keyframes kbRight   { from { transform: scale(1.05) translateX(-3%);    } to { transform: scale(1.05) translateX(0);  } }
+
+  /* Exiting slide fades out */
+  .hero-slide.exiting {
+    opacity: 0;
+    transition: opacity 1.6s cubic-bezier(.4,0,.2,1);
+  }
 
   .hero-vignette {
     position: absolute; inset: 0;
+    z-index: 1;
     background:
       linear-gradient(to top, var(--bg) 0%, rgba(7,7,12,.4) 38%, transparent 65%),
       linear-gradient(to right, rgba(7,7,12,.85) 0%, transparent 55%);
+    pointer-events: none;
   }
 
-  .hero-content { position: relative; z-index: 1; max-width: 600px; }
+  .hero-content { position: relative; z-index: 2; max-width: 600px; }
 
   .hero-eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
@@ -288,7 +316,7 @@
   /* STATS SIDE */
   .hero-stats {
     position: absolute; right: 52px; bottom: 80px;
-    z-index: 1;
+    z-index: 2;
     display: flex; flex-direction: column;
   }
   .hero-stat {
@@ -304,6 +332,45 @@
   .hero-stat-label {
     font-size: 10px; font-weight: 600; letter-spacing: .1em;
     text-transform: uppercase; color: var(--muted); margin-top: 3px;
+  }
+
+  /* ── SLIDE INDICATORS ── */
+  .hero-indicators {
+    position: absolute;
+    bottom: 28px; right: 52px;
+    z-index: 3;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .hero-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: rgba(255,255,255,.22);
+    cursor: pointer;
+    transition: background .3s, transform .3s, width .3s;
+    border: none; padding: 0;
+  }
+  .hero-dot.active {
+    background: var(--red);
+    width: 18px; border-radius: 3px;
+  }
+  .hero-dot:hover:not(.active) { background: rgba(255,255,255,.45); transform: scale(1.2); }
+
+  /* ── SLIDE CAPTION (bottom-right, fades with slide) ── */
+  .hero-caption {
+    position: absolute;
+    bottom: 80px; right: 52px;
+    z-index: 3;
+    text-align: right;
+    pointer-events: none;
+  }
+  .hero-caption-text {
+    font-size: 9px; font-weight: 600; letter-spacing: .14em;
+    text-transform: uppercase; color: rgba(255,255,255,.22);
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity .5s ease, transform .5s ease;
+  }
+  .hero-caption-text.visible {
+    opacity: 1; transform: none;
   }
 
   /* MARQUEE */
@@ -381,7 +448,7 @@
     color: #fff; margin-bottom: 28px;
   }
 
-  /* HUB CARDS — 4 columns */
+  /* HUB CARDS */
   .hub-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -408,8 +475,6 @@
     filter: brightness(.45) saturate(.9);
     transform: scale(1.04);
   }
-
-  /* Stars card gets a gold tint on hover */
   .hub-card.hub-stars:hover img {
     filter: brightness(.45) saturate(1.1) sepia(.3);
   }
@@ -443,7 +508,6 @@
   }
   .hub-card:hover .hub-card-arrow { opacity: 1; transform: translateY(0); }
 
-  /* external link badge on Stars card */
   .hub-ext-badge {
     position: absolute; top: 12px; left: 14px;
     font-size: 8px; font-weight: 700; letter-spacing: .12em;
@@ -537,11 +601,11 @@
     .hero { padding: 0 16px 60px; min-height: calc(100svh - 52px); }
     .hero h1 { font-size: clamp(52px, 16vw, 80px); }
     .hero-stats { display: none; }
+    .hero-indicators { right: 20px; bottom: 18px; }
     .status-strip { grid-template-columns: repeat(2, 1fr); }
     .status-item:nth-child(2) { border-right: none; }
     .status-item:nth-child(3) { border-bottom: none; }
     .status-item:nth-child(4) { border-right: none; border-bottom: none; }
-    /* 4 cards → 2×2 grid on mobile */
     .hub-grid { grid-template-columns: 1fr 1fr; gap: 2px; }
     .hub-card:first-child { border-radius: 10px 0 0 0; }
     .hub-card:nth-child(2) { border-radius: 0 10px 0 0; }
@@ -610,8 +674,14 @@
 
   <!-- HERO -->
   <div class="hero">
-    <div class="hero-bg" id="heroBg"></div>
+
+    <!-- SLIDESHOW BACKGROUND -->
+    <div class="hero-slides" id="heroSlides">
+      <!-- Slides injected by JS -->
+    </div>
+
     <div class="hero-vignette"></div>
+
     <div class="hero-content">
       <div class="hero-eyebrow">Season 11 — Now Active</div>
       <h1>Revolutionary<br><em>Pro League</em></h1>
@@ -624,6 +694,7 @@
         <button class="btn-ghost" onclick="navigate('database')">View Teams</button>
       </div>
     </div>
+
     <div class="hero-stats">
       <div class="hero-stat">
         <span class="hero-stat-num">30</span>
@@ -638,6 +709,10 @@
         <span class="hero-stat-label">Standings</span>
       </div>
     </div>
+
+    <!-- SLIDE INDICATORS -->
+    <div class="hero-indicators" id="heroIndicators"></div>
+
   </div>
 
   <!-- MARQUEE -->
@@ -790,7 +865,6 @@
 <!-- ═══════════════════════════
      PAGE: DATABASE
 ═══════════════════════════ -->
-
 <div id="page-database" class="page iframe-page hidden">
   <div class="iframe-loading" id="loading-database">
     <div class="spinner"></div>
@@ -836,20 +910,120 @@
 
 
 <script>
-  /* DATABASE FAIL DETECTION */
-  setTimeout(() => {
-    const iframe = document.getElementById('databaseFrame');
-    const loader = document.getElementById('loading-database');
-    const fallback = document.getElementById('database-fallback');
-    try {
-      if (!iframe.contentWindow || iframe.contentWindow.length === 0) throw 'blocked';
-    } catch(e) {
-      if (loader) loader.style.display = 'none';
-      if (fallback) { fallback.style.display = 'flex'; }
-    }
-  }, 3000);
+  /* ──────────────────────────────────────────
+     HERO SLIDESHOW
+     Add as many images + labels as you want.
+     kb options: 'kb-in' | 'kb-out' | 'kb-left' | 'kb-right'
+  ────────────────────────────────────────── */
+  const SLIDES = [
+    { src: 'LEBRONHEROBG.png',  label: 'Season 11',        kb: 'kb-in'    },
+    { src: 'SGAHEROBG.png',       label: 'Team Database',    kb: 'kb-right' },
+    { src: 'JALENJOHNSONHEROBG.png',     label: 'Salary System',    kb: 'kb-out'   },
+    { src: 'JOKICHEROBG.png',      label: 'Star System',      kb: 'kb-left'  },
+    { src: 'KYRIEHEROBG.png',       label: 'Live Standings',   kb: 'kb-in'    },
+  ];
 
-  /* NAVIGATION */
+  const INTERVAL   = 6000;   // ms between slides
+  const FADE_SPEED = 1600;   // must match CSS transition (ms) — don't change independently
+
+  let currentSlide = 0;
+  let slideTimer   = null;
+  let isTransitioning = false;
+
+  const slidesEl     = document.getElementById('heroSlides');
+  const indicatorsEl = document.getElementById('heroIndicators');
+
+  /* Build slide DOM */
+  const slideDivs = SLIDES.map((s, i) => {
+    const div = document.createElement('div');
+    div.className = 'hero-slide';
+    div.style.backgroundImage = `url('${s.src}')`;
+    slidesEl.appendChild(div);
+    return div;
+  });
+
+  /* Build indicators */
+  const dots = SLIDES.map((s, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'hero-dot';
+    btn.setAttribute('aria-label', `Slide ${i + 1}`);
+    btn.addEventListener('click', () => goToSlide(i));
+    indicatorsEl.appendChild(btn);
+    return btn;
+  });
+
+  function goToSlide(index, direction) {
+    if (isTransitioning || index === currentSlide) return;
+    isTransitioning = true;
+
+    const prev = currentSlide;
+    const next = index;
+
+    /* Activate new slide (starts invisible via opacity:0, then transitions in) */
+    const nextDiv = slideDivs[next];
+    nextDiv.classList.remove('exiting');
+    /* Remove any previous kb class */
+    nextDiv.classList.remove('kb-in', 'kb-out', 'kb-left', 'kb-right', 'active');
+    /* Force reflow so animation restarts */
+    void nextDiv.offsetWidth;
+    nextDiv.classList.add('active', SLIDES[next].kb);
+
+    /* Fade out prev */
+    const prevDiv = slideDivs[prev];
+    prevDiv.classList.add('exiting');
+    setTimeout(() => {
+      prevDiv.classList.remove('active', 'exiting', 'kb-in', 'kb-out', 'kb-left', 'kb-right');
+      isTransitioning = false;
+    }, FADE_SPEED);
+
+    /* Update dots */
+    dots[prev].classList.remove('active');
+    dots[next].classList.add('active');
+
+    currentSlide = next;
+  }
+
+  function nextSlide() {
+    const next = (currentSlide + 1) % SLIDES.length;
+    goToSlide(next);
+  }
+
+  function startTimer() {
+    clearInterval(slideTimer);
+    slideTimer = setInterval(nextSlide, INTERVAL);
+  }
+
+  /* Pause on hover */
+  slidesEl.closest('.hero').addEventListener('mouseenter', () => clearInterval(slideTimer));
+  slidesEl.closest('.hero').addEventListener('mouseleave', startTimer);
+
+  /* Swipe support for mobile */
+  let touchStartX = 0;
+  slidesEl.closest('.hero').addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  slidesEl.closest('.hero').addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) {
+      clearInterval(slideTimer);
+      goToSlide(dx < 0
+        ? (currentSlide + 1) % SLIDES.length
+        : (currentSlide - 1 + SLIDES.length) % SLIDES.length
+      );
+      startTimer();
+    }
+  }, { passive: true });
+
+  /* Init first slide */
+  slideDivs[0].classList.add('active', SLIDES[0].kb);
+  dots[0].classList.add('active');
+  startTimer();
+
+  /* Preload all images eagerly */
+  SLIDES.forEach(s => { const img = new Image(); img.src = s.src; });
+
+
+  /* ──────────────────────────────────────────
+     NAVIGATION
+  ────────────────────────────────────────── */
   function navigate(page) {
     document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
     const target = document.getElementById('page-' + page);
@@ -875,12 +1049,6 @@
     if (menu.classList.contains('open') && !menu.contains(e.target) && !ham.contains(e.target)) closeMenu();
   });
 
-  /* HERO BG */
-  window.addEventListener('load', () => {
-    const bg = document.getElementById('heroBg');
-    if (bg) bg.classList.add('loaded');
-  });
-
   /* SCROLL REVEAL */
   const revealObs = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
@@ -894,13 +1062,23 @@
 
   document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
-  /* STARS — opens in new tab.
-     Discord OAuth uses redirects that cannot work inside an iframe
-     (the callback URL would resolve inside the frame, not the parent page).
-     Opening a dedicated tab is the correct UX for OAuth flows. */
+  /* STARS */
   function openStars() {
     window.open('https://rpstarsystem.vercel.app/', '_blank', 'noopener');
   }
+
+  /* DATABASE FAIL DETECTION */
+  setTimeout(() => {
+    const iframe = document.getElementById('databaseFrame');
+    const loader = document.getElementById('loading-database');
+    const fallback = document.getElementById('database-fallback');
+    try {
+      if (!iframe.contentWindow || iframe.contentWindow.length === 0) throw 'blocked';
+    } catch(e) {
+      if (loader) loader.style.display = 'none';
+      if (fallback) { fallback.style.display = 'flex'; }
+    }
+  }, 3000);
 </script>
 
 </body>
