@@ -470,17 +470,19 @@
   }
 
   @media (max-width: 640px) {
-    /* Hero */
-    .hero { padding: 0 20px 72px; }
-    .hero h1 { font-size: clamp(50px, 13.5vw, 74px); }
-    .hero-sub { font-size: 13px; margin-bottom: 24px; max-width: 100%; }
-    .hero-actions { flex-direction: column; gap: 10px; }
-    .btn-primary, .btn-ghost { width: 100%; justify-content: center; font-size: 14px; padding: 15px 20px; }
+    /* Hero — give content room to breathe, don't cram bottom */
+    .hero { padding: 0 20px 52px; align-items: flex-end; }
+    .hero h1 { font-size: clamp(48px, 13vw, 70px); margin-bottom: 12px; }
+    .hero-eyebrow { margin-bottom: 10px; }
+    .hero-sub { font-size: 13px; margin-bottom: 20px; max-width: 100%; }
+    /* Buttons side by side, equal width, proper size */
+    .hero-actions { flex-direction: row; gap: 10px; flex-wrap: nowrap; }
+    .btn-primary, .btn-ghost { flex: 1; justify-content: center; font-size: 13px; padding: 13px 12px; min-height: 48px; }
+    /* Hide cluttered overlapping elements */
     .hero-stats { display: none; }
-    .hero-player-caption { bottom: 66px; right: 20px; }
-    .hero-player-name { font-size: clamp(14px, 3.8vw, 20px); }
-    .hero-player-role { font-size: 8px; }
-    .hero-indicators { bottom: 24px; }
+    .hero-player-caption { display: none; }
+    /* Indicators closer to bottom edge */
+    .hero-indicators { bottom: 20px; }
 
     /* Show mobile stats bar */
     .mobile-stats { display: grid; }
@@ -567,7 +569,7 @@
   <button onclick="navigate('database');closeMenu()"  data-page="database">Database</button>
   <button onclick="navigate('standings');closeMenu()" data-page="standings">Standings</button>
   <button onclick="navigate('history');closeMenu()"   data-page="history">History</button>
-  <button onclick="openStars();closeMenu()" class="m-stars">Stars</button>
+  <button onclick="openStars();closeMenu()" data-page="stars">Stars</button>
   <div class="m-divider"></div>
   <button class="m-cta" onclick="window.open('https://discord.com/invite/znF9Vnztff','_blank');closeMenu()">Join Discord</button>
 </div>
