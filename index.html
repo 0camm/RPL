@@ -348,7 +348,7 @@ nav.scrolled{border-color:var(--b)}
 .hub-card-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:20px;background:linear-gradient(to top,rgba(8,8,15,.95) 0%,rgba(8,8,15,.2) 55%,transparent 100%);transition:background .4s}
 .hub-card:hover .hub-card-overlay{background:linear-gradient(to top,rgba(8,8,15,.98) 0%,rgba(8,8,15,.4) 55%,transparent 100%)}
 .hub-card-tag{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:5px;font-family:'JetBrains Mono',monospace;opacity:0;transform:translateY(5px);transition:opacity .3s,transform .3s}
-.hub-card.hub-stars .hub-card-tag{color:var(--gold)}
+.hub-card.hub- .hub-card-tag{color:var(--gold)}
 .hub-card:hover .hub-card-tag{opacity:1;transform:none}
 .hub-card-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.04em;color:#fff;transform:translateY(3px);transition:transform .3s}
 .hub-card:hover .hub-card-name{transform:none}
@@ -1168,7 +1168,7 @@ const revealObs=new IntersectionObserver((entries)=>{
 },{threshold:0.06});
 document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
 
-function openStars(){window.open('https://rpstarsystem.vercel.app/','_blank','noopener')}
+//function openStars(){window.open('https://rpstarsystem.vercel.app/','_blank','noopener')}
 
 /* ══════════════════════════════════════════
    STANDINGS ENGINE  (full port from standings page)
