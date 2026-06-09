@@ -7,9 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" href="Images/RPL-Logo.png?v=2" type="image/png">
 <style>
-/* ══════════════════════════════════════════
-   ROOT / TOKENS  (merged from standings)
-══════════════════════════════════════════ */
+
 :root{
   --red:#e8001d;--red-a:.08;
   --red-dim:rgba(232,0,29,.13);--red-mid:rgba(232,0,29,.18);--red-edge:rgba(232,0,29,.4);
@@ -929,10 +927,15 @@ select.fc{
   <iframe src="https://rpldatabase.vercel.app/" onload="document.getElementById('loading-database').classList.add('done')" title="Database"></iframe>
 </div>
 
-<!-- ══ STANDINGS (full inline — mirrors standings page exactly) ══ -->
-<div id="page-database" class="page iframe-page hidden">
-  <div class="iframe-loading" id="loading-database"><div class="spinner"></div><p>Loading Database…</p></div>
-  <iframe src="https://rplstandings.vercel.app/" onload="document.getElementById('loading-database').classList.add('done')" title="Database"></iframe>
+<!-- STANDINGS -->
+<div id="page-standings" class="page iframe-page hidden">
+  <div class="iframe-loading" id="loading-standings">
+    <div class="spinner"></div><p>Loading Standings…</p>
+  </div>
+  <iframe src="https://rplstandings.vercel.app/" 
+    onload="document.getElementById('loading-standings').classList.add('done')" 
+    title="Standings">
+  </iframe>
 </div>
 
 <!-- ══ HISTORY ══ -->
