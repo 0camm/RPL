@@ -930,78 +930,9 @@ select.fc{
 </div>
 
 <!-- ══ STANDINGS (full inline — mirrors standings page exactly) ══ -->
-<div id="page-standings" class="page hidden" style="padding-top:calc(var(--nav-h) + var(--safe-top));min-height:100vh;overflow-y:auto;">
-
-  <div class="sbar">
-    <span class="sbar-sync" id="last-sync"></span>
-    <div class="live-chip" id="live-chip"><div class="ldot"></div><span id="live-lbl">Offline</span></div>
-  </div>
-
-  <div class="std-hero">
-    <div class="std-hero-top">
-      <div>
-        <div class="std-hero-eyebrow">Season 11 · Official Standings</div>
-        <div class="std-hero-h1"><em>RPL</em> League Standings</div>
-        <div class="std-hero-sub">
-          Live <span class="hdot"></span>
-          Updates after every game <span class="hdot"></span>
-          Season 11
-        </div>
-      </div>
-      <div class="hero-key">
-        <div class="kc"><div class="kc-pip z"></div><span class="kc-code">z</span><span class="kc-lbl">Division leader</span></div>
-        <div class="kc"><div class="kc-pip x"></div><span class="kc-code">x</span><span class="kc-lbl">Clinched playoff</span></div>
-        <div class="kc"><div class="kc-pip pi"></div><span class="kc-code">pi</span><span class="kc-lbl">Play-In</span></div>
-        <div class="kc"><div class="kc-pip e"></div><span class="kc-code">e</span><span class="kc-lbl">Eliminated</span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="std-alert" id="std-alert"></div>
-
-  <div class="std-main">
-    <div id="hist-sec" style="display:none">
-      <div class="sec-hd">
-        <div class="sec-hd-top">
-          <span class="sec-title">Match History</span>
-          <span class="sec-ct" id="hist-ct">0 games</span>
-          <div class="sec-rule"></div>
-        </div>
-        <div class="filters">
-          <input class="fc fc-search" id="f-team" placeholder="Search team…" autocomplete="off" spellcheck="false">
-          <select class="fc" id="f-status">
-            <option value="">All results</option>
-            <option value="final">Final</option>
-            <option value="forfeit">Forfeit</option>
-            <option value="incomplete">No result</option>
-          </select>
-          <select class="fc" id="f-pp">
-            <option value="15">15 / page</option>
-            <option value="25" selected>25 / page</option>
-            <option value="50">50 / page</option>
-            <option value="100">100 / page</option>
-          </select>
-        </div>
-      </div>
-      <div class="ht-wrap">
-        <div class="ht-hd">
-          <span>#</span><span>Matchup</span><span>Score</span><span>Status</span><span>Date</span>
-        </div>
-        <div id="hist-rows"></div>
-      </div>
-      <div class="hist-empty" id="hist-empty" style="display:none">No results match your filters.</div>
-      <div class="pager" id="pager" style="display:none">
-        <div class="pg-info" id="pg-info"></div>
-        <div class="pg-btns" id="pg-btns"></div>
-        <div class="pg-jump">
-          <span class="pg-jlbl">Page</span>
-          <input class="pg-jin" id="pg-jump" type="number" min="1" value="1">
-        </div>
-      </div>
-    </div>
-
-    <div class="conf-grid" id="conferences"></div>
-  </div>
+<div id="page-database" class="page iframe-page hidden">
+  <div class="iframe-loading" id="loading-database"><div class="spinner"></div><p>Loading Database…</p></div>
+  <iframe src="https://rplstandings.vercel.app/" onload="document.getElementById('loading-database').classList.add('done')" title="Database"></iframe>
 </div>
 
 <!-- ══ HISTORY ══ -->
