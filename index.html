@@ -716,6 +716,7 @@ select.fc{
     <button onclick="navigate('database')"  data-page="database">Database</button>
     <button onclick="navigate('standings')" data-page="standings">Standings</button>
     <button onclick="navigate('history')"   data-page="history">History</button>
+    <button onclick="navigate('bracket')"   data-page="bracket">Bracket</button>
     <button onclick="openStars()"           data-page="stars">Stars</button>
   </div>
   <div class="nav-right">
@@ -735,6 +736,7 @@ select.fc{
   <button onclick="navigate('database');closeMenu()"  data-page="database">Database</button>
   <button onclick="navigate('standings');closeMenu()" data-page="standings">Standings</button>
   <button onclick="navigate('history');closeMenu()"   data-page="history">History</button>
+  <button onclick="navigate('bracket');closeMenu()"   data-page="bracket">Bracket</button>
   <button onclick="openStars();closeMenu()"           data-page="stars">Stars</button>
   <div class="m-divider"></div>
   <button class="m-cta" onclick="window.open('https://discord.com/invite/znF9Vnztff','_blank');closeMenu()">Join Discord</button>
@@ -887,6 +889,11 @@ select.fc{
 <div id="page-history" class="page iframe-page hidden">
   <div class="iframe-loading" id="loading-history"><div class="spinner"></div><p>Loading History…</p></div>
   <iframe src="https://rplhistory.vercel.app/" onload="document.getElementById('loading-history').classList.add('done')" title="History"></iframe>
+</div>
+
+<div id="page-bracket" class="page iframe-page hidden">
+  <div class="iframe-loading" id="loading-bracket"><div class="spinner"></div><p>Loading Bracket…</p></div>
+  <iframe src="https://rplbracket.vercel.app/" onload="document.getElementById('loading-bracket').classList.add('done')" title="Bracket"></iframe>
 </div>
 
 <div id="toasts"></div>
