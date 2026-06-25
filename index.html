@@ -708,7 +708,7 @@ select.fc{
       <img src="Images/RPL-Logo.png" alt="RPL" style="width:30px;height:30px;object-fit:contain;border-radius:7px;">
       <span class="nav-brand">Revolutionary <em>Pro League</em></span>
     </div>
-    <span class="nav-pill">Season 11</span>
+    <span class="nav-pill">Season 12</span>
   </div>
   <div class="nav-center">
     <button onclick="navigate('home')"      data-page="home"      class="active">Home</button>
@@ -718,6 +718,7 @@ select.fc{
     <button onclick="navigate('history')"   data-page="history">History</button>
     <button onclick="navigate('bracket')"   data-page="bracket">Bracket</button>
     <button onclick="openStars()"           data-page="stars">Stars</button>
+    <button onclick="window.open('https://rpl-applications.vercel.app','_blank')" data-page="applications">Applications</button>
   </div>
   <div class="nav-right">
     <button class="nav-cta" onclick="window.open('https://discord.com/invite/znF9Vnztff','_blank')">
@@ -738,19 +739,19 @@ select.fc{
   <button onclick="navigate('history');closeMenu()"   data-page="history">History</button>
   <button onclick="navigate('bracket');closeMenu()"   data-page="bracket">Bracket</button>
   <button onclick="openStars();closeMenu()"           data-page="stars">Stars</button>
+  <button onclick="window.open('https://rpl-applications.vercel.app','_blank');closeMenu()" data-page="applications">Applications</button>
   <div class="m-divider"></div>
   <button class="m-cta" onclick="window.open('https://discord.com/invite/znF9Vnztff','_blank');closeMenu()">Join Discord</button>
 </div>
 
 <div id="page-home" class="page">
 
-  
   <div class="hero">
     <div class="hero-slides" id="heroSlides"></div>
     <div class="hero-top-fade"></div>
     <div class="hero-vignette"></div>
     <div class="hero-content">
-      <div class="hero-eyebrow">Season 11 — Now Active</div>
+      <div class="hero-eyebrow">Season 12 — Now Active</div>
       <h1>Revolutionary<br><em>Pro League</em></h1>
       <p class="hero-sub">The most structured click-to-shoot basketball league on Roblox. Elite systems. Real competition.</p>
       <div class="hero-actions">
@@ -763,7 +764,7 @@ select.fc{
     </div>
     <div class="hero-stats">
       <div class="hero-stat"><span class="hero-stat-num">30</span><span class="hero-stat-label">Franchises</span></div>
-      <div class="hero-stat"><span class="hero-stat-num">S11</span><span class="hero-stat-label">Current Season</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">S12</span><span class="hero-stat-label">Current Season</span></div>
       <div class="hero-stat"><span class="hero-stat-num">Live</span><span class="hero-stat-label">Standings</span></div>
     </div>
     <div class="hero-indicators" id="heroIndicators"></div>
@@ -774,17 +775,15 @@ select.fc{
     </div>
   </div>
 
-  
   <div class="mobile-stats">
     <div class="mobile-stat"><span class="mobile-stat-num">30</span><span class="mobile-stat-label">Teams</span></div>
-    <div class="mobile-stat"><span class="mobile-stat-num">S11</span><span class="mobile-stat-label">Season</span></div>
+    <div class="mobile-stat"><span class="mobile-stat-num">S12</span><span class="mobile-stat-label">Season</span></div>
     <div class="mobile-stat"><span class="mobile-stat-num" style="color:var(--gr);font-size:16px;padding-top:4px;">●</span><span class="mobile-stat-label">Live</span></div>
   </div>
 
-  
   <div class="marquee-wrap" aria-hidden="true">
     <div class="marquee-track">
-      <span>RPL Season 11</span><span class="accent">●</span>
+      <span>RPL Season 12</span><span class="accent">●</span>
       <span>30 Franchises</span><span class="accent">●</span>
       <span>Elite Competition</span><span class="accent">●</span>
       <span>Standings Live</span><span class="accent">●</span>
@@ -792,7 +791,7 @@ select.fc{
       <span>Salary System</span><span class="accent">●</span>
       <span>Star System</span><span class="accent">●</span>
       <span>Roblox Basketball</span><span class="accent">●</span>
-      <span>RPL Season 11</span><span class="accent">●</span>
+      <span>RPL Season 12</span><span class="accent">●</span>
       <span>30 Franchises</span><span class="accent">●</span>
       <span>Elite Competition</span><span class="accent">●</span>
       <span>Standings Live</span><span class="accent">●</span>
@@ -803,15 +802,13 @@ select.fc{
     </div>
   </div>
 
-  
   <div class="status-strip reveal">
     <div class="status-item"><div class="status-label">Season Status</div><div class="status-live"><div class="live-dot"></div>Live</div></div>
     <div class="status-item"><div class="status-label">Active Teams</div><div class="status-value">30</div></div>
-    <div class="status-item"><div class="status-label">Season</div><div class="status-value">11</div></div>
+    <div class="status-item"><div class="status-label">Season</div><div class="status-value">12</div></div>
     <div class="status-item"><div class="status-label">Scripts</div><div class="status-value">Gameday</div></div>
   </div>
 
-  
   <div class="section">
     <div class="section-header">
       <div class="section-eyebrow reveal">League Hub</div>
@@ -842,7 +839,6 @@ select.fc{
     </div>
   </div>
 
-  
   <div class="links-section">
     <div class="links-grid">
       <a href="https://discord.com/invite/znF9Vnztff" target="_blank" rel="noopener" class="link-card reveal">
@@ -909,6 +905,40 @@ select.fc{
       <button class="mclose" id="m-close" aria-label="Close">✕</button>
     </div>
     <div class="mbody" id="m-body"></div>
+  </div>
+</div>
+
+<!-- Applications Popup -->
+<div id="apply-popup" style="
+  position:fixed;bottom:28px;right:24px;z-index:5000;
+  background:var(--s1);border:1px solid var(--b);border-radius:14px;
+  width:min(340px,calc(100vw - 32px));overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.7);
+  transform:translateY(16px);opacity:0;pointer-events:none;
+  transition:opacity .3s ease,transform .3s ease;
+">
+  <div style="height:2px;background:linear-gradient(90deg,var(--red),transparent 60%)"></div>
+  <div style="padding:18px 20px 6px;display:flex;align-items:center;justify-content:space-between">
+    <div style="font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red);font-family:'JetBrains Mono',monospace;display:flex;align-items:center;gap:7px">
+      <span style="width:6px;height:6px;border-radius:50%;background:var(--red);display:inline-block;animation:livePulse 2s ease infinite"></span>
+      Season 12 Applications
+    </div>
+    <button onclick="closeApplyPopup()" style="background:var(--s3);border:1px solid var(--b);cursor:pointer;color:var(--mu);font-size:14px;width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:all .13s;flex-shrink:0" onmouseover="this.style.color='#fff'" onmouseout="this.style.color=''">✕</button>
+  </div>
+  <div style="padding:6px 20px 20px;display:flex;flex-direction:column;gap:10px">
+    <p style="font-size:13px;color:var(--tx2);line-height:1.65;font-weight:300">
+      Interested in joining RPL? Apply to work on staff or own a franchise this season.
+    </p>
+    <a href="https://rpl-applications.vercel.app" target="_blank" rel="noopener" onclick="closeApplyPopup()" style="
+      display:flex;align-items:center;justify-content:space-between;
+      background:var(--red);color:#fff;text-decoration:none;
+      padding:11px 14px;border-radius:8px;font-size:13px;font-weight:600;
+      transition:background .15s;
+    " onmouseover="this.style.background='#c8001a'" onmouseout="this.style.background=''">
+      <span>🏀 Join as Staff or Franchise Owner</span>
+      <span style="font-size:11px;opacity:.8">Apply →</span>
+    </a>
+    <button onclick="closeApplyPopup()" style="background:none;border:none;color:var(--mu);font-size:11px;cursor:pointer;padding:2px 0;text-align:left;font-family:'Inter',sans-serif">Not interested</button>
   </div>
 </div>
 
@@ -1328,6 +1358,31 @@ function initStandings(){
   pollHandle=setInterval(fetchData,CFG.POLL);
   connectSSE();
 }
+
+// Applications Popup
+(function(){
+  const POPUP_KEY='rpl_apply_popup_dismissed';
+  const popup=document.getElementById('apply-popup');
+
+  function showApplyPopup(){
+    if(sessionStorage.getItem(POPUP_KEY))return;
+    setTimeout(()=>{
+      popup.style.opacity='1';
+      popup.style.transform='translateY(0)';
+      popup.style.pointerEvents='auto';
+    },3500);
+  }
+
+  window.closeApplyPopup=function(){
+    popup.style.opacity='0';
+    popup.style.transform='translateY(16px)';
+    popup.style.pointerEvents='none';
+    sessionStorage.setItem(POPUP_KEY,'1');
+  };
+
+  showApplyPopup();
+})();
+
 </script>
 </body>
 </html>
