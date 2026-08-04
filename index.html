@@ -1081,7 +1081,6 @@ function navigate(page,pushHistory=true){
   if(target)target.classList.remove('hidden');
   document.querySelectorAll('[data-page]').forEach(btn=>btn.classList.toggle('active',btn.dataset.page===page));
   if(page==='home')window.scrollTo({top:0,behavior:'smooth'});
-  if(page==='standings')initStandings();
 
   document.title=PAGE_TITLES[page]||PAGE_TITLES.home;
 
@@ -1097,6 +1096,15 @@ window.addEventListener('popstate',e=>{
   const page=(e.state&&e.state.page)||pageFromPath(location.pathname);
   navigate(page,false);
 });
+
+// Route immediately based on the current URL. This runs right here, at the
+// top of the script, on purpose — later in this file there is unrelated
+// dashboard code that references elements this page doesn't have, and if
+// that code throws, it would otherwise stop every statement after it from
+// running, including this one. Keeping routing first guarantees the correct
+// tab always opens on load/refresh regardless of what happens later.
+navigate(pageFromPath(location.pathname),false);
+history.replaceState({page:pageFromPath(location.pathname)},'',location.pathname===''?'/':location.pathname);
 
 function toggleMenu(){
   const menu=document.getElementById('mobileMenu');
@@ -1132,171 +1140,6 @@ const revealObs=new IntersectionObserver((entries)=>{
 },{threshold:0.06});
 document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
 
-const CFG={API:'https://rplstandings.onrender.com/rpl/standings',POLL:30000};
-const ESPN={ATL:'atl',BOS:'bos',BKN:'bkn',CHA:'cha',CHI:'chi',CLE:'cle',DAL:'dal',DEN:'den',DET:'det',GSW:'gs',HOU:'hou',IND:'ind',LAC:'lac',LAL:'lal',MEM:'mem',MIA:'mia',MIL:'mil',MIN:'min',NOP:'no',NYK:'ny',OKC:'okc',ORL:'orl',PHI:'phi',PHX:'phx',POR:'por',SAC:'sac',SAS:'sa',TOR:'tor',UTAH:'utah',WAS:'wsh'};
-const logo=(url,abb)=>{if(ESPN[abb])return`https://a.espncdn.com/i/teamlogos/nba/500/${ESPN[abb]}.png`;if(!url)return'';if(url.includes('roblox.com'))return'';return url.startsWith('http://')?'https://'+url.slice(7):url};
-const NAMES={ATL:'Atlanta Hawks',BOS:'Boston Celtics',BKN:'Brooklyn Nets',CHA:'Charlotte Hornets',CHI:'Chicago Bulls',CLE:'Cleveland Cavaliers',DAL:'Dallas Mavericks',DEN:'Denver Nuggets',DET:'Detroit Pistons',GSW:'Golden State Warriors',HOU:'Houston Rockets',IND:'Indiana Pacers',LAC:'LA Clippers',LAL:'Los Angeles Lakers',MEM:'Memphis Grizzlies',MIA:'Miami Heat',MIL:'Milwaukee Bucks',MIN:'Minnesota Timberwolves',NOP:'New Orleans Pelicans',NYK:'New York Knicks',OKC:'Oklahoma City Thunder',ORL:'Orlando Magic',PHI:'Philadelphia 76ers',PHX:'Phoenix Suns',POR:'Portland Trail Blazers',SAC:'Sacramento Kings',SAS:'San Antonio Spurs',TOR:'Toronto Raptors',UTAH:'Utah Jazz',WAS:'Washington Wizards'};
-const EAST=new Set(['ATL','BOS','BKN','CHA','CHI','CLE','DET','IND','MIA','MIL','NYK','ORL','PHI','TOR','WAS']);
-const WEST=new Set(['DAL','DEN','GSW','HOU','LAC','LAL','MEM','MIN','NOP','OKC','PHX','POR','SAC','SAS','UTAH']);
-
-let prevData=null,fails=0,lastId=null,allResults=[],pg=1;
-let standingsInitialized=false,pollHandle=null;
-
-const pct=(w,l)=>{const g=w+l;return g?(w/g).toFixed(3).replace(/^0/,''):'—'};
-const fmtDate=iso=>{if(!iso)return'—';const d=new Date(iso);if(isNaN(d))return'—';const diff=Math.floor((Date.now()-d)/86400000);if(diff===0)return'Today';if(diff===1)return'Yest.';if(diff<7)return`${diff}d ago`;return d.toLocaleDateString('en-US',{month:'short',day:'numeric'})};
-const timeAgo=iso=>{if(!iso)return'';const s=Math.floor((Date.now()-new Date(iso))/1000);if(s<60)return`${s}s ago`;if(s<3600)return`${Math.floor(s/60)}m ago`;if(s<86400)return`${Math.floor(s/3600)}h ago`;return`${Math.floor(s/86400)}d ago`};
-
-function toast(msg,c='red',dur=5000){
-  const t=Object.assign(document.createElement('div'),{className:`toast ${c}`,textContent:msg});
-  document.getElementById('toasts').prepend(t);
-  setTimeout(()=>{t.classList.add('out');setTimeout(()=>t.remove(),240)},dur);
-}
-function setLive(v){
-  const c=document.getElementById('live-chip'),l=document.getElementById('live-lbl');
-  c.classList.toggle('on',v);l.textContent=v?'Live':'Offline';
-}
-function setSync(iso){document.getElementById('last-sync').textContent=iso?`Synced ${timeAgo(iso)}`:''}
-
-const getF=()=>{
-  const tq=document.getElementById('f-team').value.trim().toLowerCase();
-  const sq=document.getElementById('f-status').value;
-  return allResults.filter(g=>{
-    if(sq&&(g.status||'').toLowerCase()!==sq)return false;
-    if(tq){const a=(g.awayABB||'').toLowerCase(),h=(g.homeABB||'').toLowerCase();if(!a.includes(tq)&&!h.includes(tq))return false}
-    return true;
-  });
-};
-const getPP=()=>parseInt(document.getElementById('f-pp').value,10)||25;
-
-function renderHistory(){
-  const filt=getF(),pp=getPP();
-  const total=Math.max(1,Math.ceil(filt.length/pp));
-  if(pg>total)pg=total;
-  const sec=document.getElementById('hist-sec');
-  if(!allResults.length){sec.style.display='none';return}
-  sec.style.display='block';
-  document.getElementById('hist-ct').textContent=
-    filt.length===allResults.length
-      ?`${allResults.length} game${allResults.length!==1?'s':''}`
-      :`${filt.length}/${allResults.length}`;
-  const start=(pg-1)*pp;
-  const slice=filt.slice(start,start+pp);
-  const rowsEl=document.getElementById('hist-rows');
-  const emptyEl=document.getElementById('hist-empty');
-  if(!filt.length){rowsEl.innerHTML='';emptyEl.style.display='block';document.getElementById('pager').style.display='none';return}
-  emptyEl.style.display='none';
-  rowsEl.innerHTML=slice.map((g,i)=>{
-    const num=filt.length-start-i;
-    const hw=g.homeScore>g.awayScore,aw=g.awayScore>g.homeScore;
-    const st=(g.status||'final').toLowerCase();
-    let bt=st.toUpperCase(),bc=st;
-    if(st==='final'&&g.quarter==='OT'){bt='OT';bc='ot'}
-    if(st==='incomplete')bt='—';
-    if(st==='forfeit')bt='FORFEIT';
-    const aL=logo(g.awayLogo,g.awayABB),hL=logo(g.homeLogo,g.homeABB);
-    const clk=st==='final'||st==='forfeit';
-    return`<div class="hr st-${st}${clk?' clk':''}" data-i="${start+i}"${clk?' role="button" tabindex="0"':''}>
-      <span class="hn">${num}</span>
-      <span class="hm">
-        ${aL?`<img class="hm-logo" src="${aL}" alt="" loading="lazy">`:'<span class="hm-nolog"></span>'}
-        <span class="hm-away${hw?' dim':''}">${g.awayABB||'?'}</span>
-        <span class="hm-at">@</span>
-        <span class="hm-home-wrap">
-          ${hL?`<img class="hm-logo" src="${hL}" alt="" loading="lazy">`:'<span class="hm-nolog"></span>'}
-          <span class="hm-home${aw?' dim':''}">${g.homeABB||'?'}</span>
-        </span>
-      </span>
-      <span class="hs">
-        <span class="hs-a${aw?' w':''}">${g.awayScore??'—'}</span>
-        <span class="hs-dash">–</span>
-        <span class="hs-h${hw?' w':''}">${g.homeScore??'—'}</span>
-      </span>
-      <span class="hb"><span class="hbadge ${bc}">${bt}</span></span>
-      <span class="hdate">${fmtDate(g.timestamp)}${clk?'<span class="harrow">↗</span>':''}</span>
-    </div>`;
-  }).join('');
-
-  rowsEl.querySelectorAll('.hr.clk').forEach(el=>{
-    const g=filt[parseInt(el.dataset.i,10)];
-    el.addEventListener('click',()=>openModal(g));
-    el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')openModal(g)});
-  });
-
-  const pagerEl=document.getElementById('pager');
-  pagerEl.style.display='flex';
-  document.getElementById('pg-info').textContent=`${start+1}–${Math.min(start+pp,filt.length)} of ${filt.length}`;
-
-  const btnsEl=document.getElementById('pg-btns');
-  const W=2;let h='';
-  h+=`<button class="pb" id="p-prev"${pg<=1?' disabled':''}>‹ Prev</button>`;
-  const pages=[1];
-  for(let i=Math.max(2,pg-W);i<=Math.min(total-1,pg+W);i++)pages.push(i);
-  if(total>1)pages.push(total);
-  let last=0;
-  for(const p of pages){
-    if(p-last>1)h+=`<span class="pb-ellip">…</span>`;
-    h+=`<button class="pb${p===pg?' cur':''}" data-pg="${p}">${p}</button>`;
-    last=p;
-  }
-  h+=`<button class="pb" id="p-next"${pg>=total?' disabled':''}>Next ›</button>`;
-  btnsEl.innerHTML=h;
-  btnsEl.querySelector('#p-prev')?.addEventListener('click',()=>{pg--;renderHistory()});
-  btnsEl.querySelector('#p-next')?.addEventListener('click',()=>{pg++;renderHistory()});
-  btnsEl.querySelectorAll('[data-pg]').forEach(b=>b.addEventListener('click',()=>{pg=parseInt(b.dataset.pg,10);renderHistory()}));
-
-  const ji=document.getElementById('pg-jump');
-  ji.max=total;ji.value=pg;
-}
-
-['f-team','f-status','f-pp'].forEach(id=>document.getElementById(id).addEventListener('input',()=>{pg=1;renderHistory()}));
-document.getElementById('pg-jump').addEventListener('change',e=>{
-  const v=parseInt(e.target.value,10),tot=Math.max(1,Math.ceil(getF().length/getPP()));
-  if(v>=1&&v<=tot){pg=v;renderHistory()}else e.target.value=pg;
-});
-
-function openModal(g){
-  if(!g)return;
-  const hw=g.homeScore>g.awayScore,aw=g.awayScore>g.homeScore;
-  const st=(g.status||'final').toLowerCase();
-  const aL=logo(g.awayLogo,g.awayABB),hL=logo(g.homeLogo,g.homeABB);
-  document.getElementById('m-matchup').innerHTML=`
-    <div class="mteam">${aL?`<img src="${aL}" alt="">`:''}<span class="mabb">${g.awayABB||'?'}</span></div>
-    <span class="mscore${aw?' w':''}">${g.awayScore??'—'}</span>
-    <span class="msep">–</span>
-    <span class="mscore${hw?' w':''}">${g.homeScore??'—'}</span>
-    <div class="mteam"><span class="mabb">${g.homeABB||'?'}</span>${hL?`<img src="${hL}" alt="">`:''}</div>`;
-  const mb=document.getElementById('m-badge');
-  let bt=st.toUpperCase(),bc=st;
-  if(st==='final'&&g.quarter==='OT'){bt='FINAL/OT';bc='ot'}
-  if(st==='forfeit')bt='FORFEIT';
-  mb.textContent=bt;mb.className=`mbadge ${bc}`;
-  document.getElementById('m-season').textContent=g.season||'';
-  const potg=g.playerOfGame;
-  const pH=potg?`<div class="icard"><div class="ilbl">⭐ Player of the Game</div>
-    <div class="potg-name">${potg.name||'—'}</div>
-    <div class="potg-team">${potg.team||''}</div>
-    <div class="potg-stats">${[['PTS',potg.pts],['AST',potg.ast],['REB',potg.reb],['STL',potg.stl],['BLK',potg.blk]].map(([l,v])=>`<div class="ps"><span class="ps-v">${v??0}</span><span class="ps-l">${l}</span></div>`).join('')}</div></div>`:
-    `<div class="icard"><div class="ilbl">⭐ Player of the Game</div><p class="refs-na">Not available</p></div>`;
-  const rf=(g.referees&&g.referees!=='')?g.referees:null;
-  const rH=`<div class="icard"><div class="ilbl">📋 Referee(s)</div>${rf?`<div class="refs-txt">${rf}</div>`:'<p class="refs-na">Not listed</p>'}</div>`;
-  const bsTbl=stats=>{
-    if(!stats?.length)return`<p class="bsnone">No player stats recorded</p>`;
-    return`<div class="bstbl-wrap"><table class="bstbl">
-      <thead><tr><th>Player</th><th>PTS</th><th>AST</th><th>REB</th><th>STL</th><th>BLK</th><th>FGM</th><th>FGA</th><th>FG%</th><th>FTM</th><th>FTA</th><th>3PM</th><th>3PA</th><th>TO</th></tr></thead>
-      <tbody>${stats.map(p=>{const fg=p.fga>0?Math.round(p.fgm/p.fga*100):0;return`<tr><td>${p.name||'?'}</td><td class="pts">${p.pts??0}</td><td>${p.ast??0}</td><td>${p.reb??0}</td><td>${p.stl??0}</td><td>${p.blk??0}</td><td>${p.fgm??0}</td><td>${p.fga??0}</td><td>${fg}%</td><td>${p.ftm??0}</td><td>${p.fta??0}</td><td>${p.threeM??0}</td><td>${p.threeA??0}</td><td>${p.to??0}</td></tr>`}).join('')}
-      </tbody></table></div>`;
-  };
-  document.getElementById('m-body').innerHTML=`
-    <div class="minfo">${pH}${rH}</div>
-    <div class="bssec">
-      <div class="bshd">${aL?`<img src="${aL}" alt="">`:''}<span class="bsname">${g.awayABB||'Away'}</span><span class="bssc${aw?' w':''}">${g.awayScore??'—'}</span></div>
-      ${bsTbl(g.awayStats)}</div>
-    <div class="bssec">
-      <div class="bshd">${hL?`<img src="${hL}" alt="">`:''}<span class="bsname">${g.homeABB||'Home'}</span><span class="bssc${hw?' w':''}">${g.homeScore??'—'}</span></div>
-      ${bsTbl(g.homeStats)}</div>`;
-  document.getElementById('modal-bg').classList.add('open');
-  document.body.style.overflow='hidden';
-}
 function closeModal(){
   document.getElementById('modal-bg').classList.remove('open');
   document.body.style.overflow='';
@@ -1304,116 +1147,6 @@ function closeModal(){
 document.getElementById('m-close').addEventListener('click',closeModal);
 document.getElementById('modal-bg').addEventListener('click',e=>{if(e.target.id==='modal-bg')closeModal()});
 
-function flatToConfs(teams){
-  const e=[],w=[],o=[];
-  for(const t of teams){
-    const ent={name:NAMES[t.abb]||t.abb,abbr:t.abb,w:t.wins||0,l:t.losses||0,pct:t.pct||'0.000',status:t.status||'',logo:logo(t.logo,t.abb),streak:t.streak||'—'};
-    if(EAST.has(t.abb))e.push(ent);else if(WEST.has(t.abb))w.push(ent);else o.push(ent);
-  }
-  return{eastern:e,western:[...w,...o]};
-}
-const sortT=arr=>[...arr].sort((a,b)=>{const pa=parseFloat(a.pct)||0,pb=parseFloat(b.pct)||0;if(pb!==pa)return pb-pa;const ga=a.w+a.l,gb=b.w+b.l;if(gb!==ga)return gb-ga;return b.w-a.w});
-const strk=raw=>!raw||raw==='—'?`<span class="rstrk n">—</span>`:`<span class="rstrk ${raw[0]==='W'?'w':'l'}">${raw}</span>`;
-
-function renderConfs(data){
-  const el=document.getElementById('conferences');
-  const sd=Array.isArray(data.standings)?flatToConfs(data.standings):(data.standings||{eastern:[],western:[]});
-  const changed=new Set();
-  if(prevData){
-    for(const ck of['eastern','western']){
-      for(const t of(sd[ck]||[])){
-        const p=(prevData[ck]||[]).find(x=>x.abbr===t.abbr);
-        if(!p||p.w!==t.w||p.l!==t.l||p.status!==t.status||p.streak!==t.streak)changed.add(t.abbr);
-      }
-    }
-  }
-  el.innerHTML=[
-    {key:'eastern',name:'Eastern Conference',cls:'east',tag:'EAST'},
-    {key:'western',name:'Western Conference',cls:'west',tag:'WEST'},
-  ].map(c=>{
-    const teams=sortT(sd[c.key]||[]);
-    const rows=teams.map((t,i)=>{
-      const sc=t.status||'e',fl=changed.has(t.abbr)?' flash':'';
-      const cut=(i===4||i===6)?' cut':'';
-      return`<div class="srow s-${sc}${fl}${cut}">
-        <span class="rrank">${i+1}</span>
-        <span class="rlogo">${t.logo?`<img src="${t.logo}" alt="" loading="lazy">`:'<div class="ph"></div>'}</span>
-        <span>
-          <div class="rn">${t.name}</div>
-          <div class="rmeta">
-            <span class="rabb">${t.abbr}</span>
-            ${t.status?`<span class="rbadge ${sc}">${sc.toUpperCase()}</span>`:''}
-          </div>
-        </span>
-        <span class="rw">${t.w}</span>
-        <span class="rl">${t.l}</span>
-        <span class="rp">${pct(t.w,t.l)}</span>
-        ${strk(t.streak)}
-      </div>`;
-    }).join('');
-    return`<div>
-      <div class="conf-hd">
-        <span class="conf-tag ${c.cls}">${c.tag}</span>
-        <span class="conf-name">${c.name}</span>
-      </div>
-      <div class="std-wrap">
-        <div class="std-hd"><span>#</span><span></span><span>Team</span><span>W</span><span>L</span><span>PCT</span><span>STRK</span></div>
-        ${rows}
-      </div>
-    </div>`;
-  }).join('');
-  setTimeout(()=>document.querySelectorAll('.srow.flash').forEach(r=>r.classList.remove('flash')),1900);
-  prevData=JSON.parse(JSON.stringify(sd));
-}
-
-async function fetchData(){
-  try{
-    const res=await fetch(CFG.API,{cache:'no-store',headers:{Accept:'application/json'}});
-    if(!res.ok)throw new Error(`HTTP ${res.status}`);
-    const data=await res.json();
-    fails=0;setLive(true);
-    setSync(data.lastUpdated||new Date().toISOString());
-    document.getElementById('std-alert').classList.remove('on');
-    if(data.results?.length){
-      const lat=data.results[0];
-      if(lat?.id&&lat.id!==lastId&&prevData){
-        lastId=lat.id;
-        const st=lat.status;
-        toast(`${lat.awayABB} @ ${lat.homeABB} — ${st==='final'?`${lat.awayScore}–${lat.homeScore} FINAL`:st==='forfeit'?'FORFEIT':st==='incomplete'?'NO RESULT':st.toUpperCase()}`,st==='forfeit'?'amber':'green',6000);
-      }
-      if(!lastId)lastId=data.results[0]?.id;
-    }
-    const nids=(data.results||[]).map(r=>r.id).join(',');
-    if(nids!==allResults.map(r=>r.id).join(',')){allResults=data.results||[];renderHistory()}
-    renderConfs(data);
-  }catch(err){
-    fails++;
-    if(fails>=3){
-      setLive(false);
-      const a=document.getElementById('std-alert');
-      a.textContent=`⚠ Standings server unreachable — showing last known data. (${err.message})`;
-      a.classList.add('on');
-    }
-    if(!prevData)renderConfs({standings:[]});
-  }
-}
-
-function connectSSE(){
-  if(typeof EventSource==='undefined')return;
-  const url=CFG.API.replace(/\/standings$/,'/standings/events');
-  const es=new EventSource(url);
-  es.addEventListener('standings',()=>fetchData());
-  es.addEventListener('result',()=>fetchData());
-  es.onerror=()=>es.close();
-}
-
-function initStandings(){
-  if(standingsInitialized)return;
-  standingsInitialized=true;
-  fetchData();
-  pollHandle=setInterval(fetchData,CFG.POLL);
-  connectSSE();
-}
 
 // Applications Popup
 (function(){
@@ -1438,11 +1171,6 @@ function initStandings(){
 
   showApplyPopup();
 })();
-
-// Initial route from the URL on page load (supports deep-linking to /salary, /standings, etc.)
-navigate(pageFromPath(location.pathname),false);
-history.replaceState({page:pageFromPath(location.pathname)},'',location.pathname===''?'/':location.pathname);
-
 </script>
 </body>
 </html>
