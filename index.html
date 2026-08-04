@@ -1058,14 +1058,45 @@ document.querySelectorAll('.hub-card[tabindex]').forEach(card=>{
 const navEl=document.getElementById('mainNav');
 window.addEventListener('scroll',()=>{navEl.classList.toggle('scrolled',window.scrollY>20)},{passive:true});
 
-function navigate(page){
+const PAGE_TITLES={
+  home:'RPL — Revolutionary Pro League',
+  salary:'Salary — RPL',
+  database:'Team Database — RPL',
+  standings:'Standings — RPL',
+  history:'History — RPL',
+  bracket:'Bracket — RPL',
+  rules:'Rulebook — RPL'
+};
+const VALID_PAGES=Object.keys(PAGE_TITLES);
+
+function pageFromPath(path){
+  const p=path.replace(/^\/+|\/+$/g,'').toLowerCase();
+  return VALID_PAGES.includes(p)?p:'home';
+}
+
+function navigate(page,pushHistory=true){
+  if(!VALID_PAGES.includes(page))page='home';
   document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));
   const target=document.getElementById('page-'+page);
   if(target)target.classList.remove('hidden');
   document.querySelectorAll('[data-page]').forEach(btn=>btn.classList.toggle('active',btn.dataset.page===page));
   if(page==='home')window.scrollTo({top:0,behavior:'smooth'});
   if(page==='standings')initStandings();
+
+  document.title=PAGE_TITLES[page]||PAGE_TITLES.home;
+
+  if(pushHistory){
+    const path=page==='home'?'/':'/'+page;
+    if(location.pathname!==path){
+      history.pushState({page:page},'',path);
+    }
+  }
 }
+
+window.addEventListener('popstate',e=>{
+  const page=(e.state&&e.state.page)||pageFromPath(location.pathname);
+  navigate(page,false);
+});
 
 function toggleMenu(){
   const menu=document.getElementById('mobileMenu');
@@ -1407,6 +1438,10 @@ function initStandings(){
 
   showApplyPopup();
 })();
+
+// Initial route from the URL on page load (supports deep-linking to /salary, /standings, etc.)
+navigate(pageFromPath(location.pathname),false);
+history.replaceState({page:pageFromPath(location.pathname)},'',location.pathname===''?'/':location.pathname);
 
 </script>
 </body>
