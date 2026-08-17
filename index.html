@@ -27,17 +27,17 @@
 
 :root{
   --red:#e8001d;--red-a:.08;
-  --red-dim:rgba(232,0,29,.13);--red-mid:rgba(232,0,29,.18);--red-edge:rgba(232,0,29,.4);
-  --red-glow:rgba(232,0,29,.55);
-  --bg:#08080f;--s1:#0e0e1a;--s2:#131322;--s3:#191929;--s4:#202034;
+  --red-dim:rgba(232,0,29,.12);--red-mid:rgba(232,0,29,.18);--red-edge:rgba(232,0,29,.4);
+  --red-glow:rgba(232,0,29,.4);
+  --bg:#000000;--s1:#000000;--s2:#0a0a0a;--s3:#111111;--s4:#1a1a1a;
   --surface:var(--s1);--surface2:var(--s2);
-  --b:rgba(255,255,255,.06);--b2:rgba(255,255,255,.03);
+  --b:rgba(255,255,255,.09);--b2:rgba(255,255,255,.055);
   --border:var(--b);--border2:var(--b2);
-  --mu:#52526a;--mu2:#3c3c55;
+  --mu:#6e6e6e;--mu2:#3a3a3a;
   --muted:var(--mu);--muted2:var(--mu2);
-  --tx:#e2e2f2;--tx2:#9898b8;
+  --tx:#f2f2f2;--tx2:#9a9a9a;
   --text:var(--tx);
-  --gr:#18d464;--gr-d:rgba(24,212,100,.09);
+  --gr:#2ee87a;--gr-d:rgba(46,232,122,.09);
   --am:#f5a623;--am-d:rgba(245,166,35,.09);
   --bl:#5b9cf6;--bl-d:rgba(91,156,246,.09);
   --win:#3de87a;--lose:#f06070;
@@ -73,20 +73,6 @@ button:focus-visible,a:focus-visible{outline-offset:3px}
 ::-webkit-scrollbar-thumb:hover{background:var(--mu)}
 *{scrollbar-width:thin;scrollbar-color:var(--mu2) transparent}
 
-/* ambient texture: faint grain + court-line watermark, fixed, never blocks input */
-.grain{
-  position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.035;mix-blend-mode:overlay;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-.court-lines{
-  position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.05;
-  background-image:
-    radial-gradient(circle at 50% 0%, transparent 0, transparent 118px, rgba(255,255,255,.5) 119px, rgba(255,255,255,.5) 120px, transparent 121px),
-    repeating-linear-gradient(0deg, rgba(255,255,255,.06) 0px, rgba(255,255,255,.06) 1px, transparent 1px, transparent 140px);
-  background-position:center -60px, 0 0;
-  background-repeat:no-repeat, repeat;
-}
-
 /* scroll progress */
 .scroll-progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--red),#ff5a6a);width:0%;z-index:300;transition:width .1s linear;box-shadow:0 0 8px var(--red-glow)}
 
@@ -97,7 +83,7 @@ nav{
   display:flex;align-items:center;justify-content:space-between;
   padding-left:max(20px,var(--safe-left));
   padding-right:max(20px,var(--safe-right));
-  background:rgba(8,8,15,.92);
+  background:rgba(0,0,0,.92);
   backdrop-filter:blur(24px) saturate(160%);
   -webkit-backdrop-filter:blur(24px) saturate(160%);
   border-bottom:1px solid var(--b2);
@@ -121,11 +107,9 @@ nav.nav-hidden{transform:translateY(-100%)}
 .nav-pill{
   font-size:10px;font-weight:600;letter-spacing:.08em;
   color:var(--mu);text-transform:uppercase;
-  background:var(--s2);border:1px solid var(--b);border-radius:20px;padding:3px 9px;
-  position:relative;overflow:hidden;
+  background:var(--s3);border:1px solid var(--b);border-radius:20px;padding:3px 9px;
+  position:relative;
 }
-.nav-pill::after{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,.14),transparent);animation:pillSheen 4.5s ease-in-out infinite}
-@keyframes pillSheen{0%{left:-60%}55%{left:130%}100%{left:130%}}
 .nav-center{
   display:flex;align-items:center;gap:1px;
   position:absolute;left:50%;transform:translateX(-50%);
@@ -175,7 +159,7 @@ nav.nav-hidden{transform:translateY(-100%)}
 .mobile-menu{
   position:fixed;
   top:calc(var(--nav-h) + var(--safe-top));left:0;right:0;z-index:190;
-  background:rgba(8,8,15,.97);
+  background:rgba(0,0,0,.97);
   backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
   border-bottom:1px solid var(--b);
   padding:8px 12px calc(16px + var(--safe-bottom));
@@ -267,13 +251,13 @@ nav.nav-hidden{transform:translateY(-100%)}
 .hero-vignette{
   position:absolute;inset:0;z-index:1;
   background:
-    linear-gradient(to top,var(--bg) 0%,rgba(8,8,15,.55) 32%,transparent 60%),
-    linear-gradient(to right,rgba(8,8,15,.88) 0%,rgba(8,8,15,.3) 50%,transparent 70%);
+    linear-gradient(to top,var(--bg) 0%,rgba(0,0,0,.55) 32%,transparent 60%),
+    linear-gradient(to right,rgba(0,0,0,.88) 0%,rgba(0,0,0,.3) 50%,transparent 70%);
   pointer-events:none;
 }
 .hero-top-fade{
   position:absolute;top:0;left:0;right:0;height:120px;z-index:1;
-  background:linear-gradient(to bottom,rgba(8,8,15,.5) 0%,transparent 100%);
+  background:linear-gradient(to bottom,rgba(0,0,0,.5) 0%,transparent 100%);
   pointer-events:none;
 }
 .hero-content{position:relative;z-index:2;max-width:580px;will-change:transform}
@@ -297,7 +281,7 @@ nav.nav-hidden{transform:translateY(-100%)}
 @keyframes heroUp{to{opacity:1;transform:none}}
 .hero-sub{
   font-size:13.5px;line-height:1.75;font-weight:300;
-  color:rgba(226,226,242,.65);max-width:370px;margin-bottom:30px;
+  color:rgba(242,242,242,.65);max-width:370px;margin-bottom:30px;
   opacity:0;transform:translateY(14px);animation:heroUp .7s var(--ease) .48s forwards;
 }
 .hero-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;
@@ -305,17 +289,14 @@ nav.nav-hidden{transform:translateY(-100%)}
 }
 
 .hero-stats{
-  position:absolute;right:52px;top:80px;z-index:2;
-  display:flex;flex-direction:column;
-  background:rgba(8,8,15,.45);backdrop-filter:blur(16px);
-  border:1px solid var(--b2);border-radius:12px;overflow:hidden;
+  position:absolute;right:52px;top:88px;z-index:2;
+  display:flex;align-items:stretch;gap:0;
   opacity:0;transform:translateY(-10px);animation:heroUp .7s var(--ease) .35s forwards;
 }
-.hero-stat{display:flex;flex-direction:column;padding:14px 20px;border-bottom:1px solid var(--b2);text-align:right;transition:background .2s}
-.hero-stat:hover{background:rgba(255,255,255,.03)}
-.hero-stat:last-child{border-bottom:none}
-.hero-stat-num{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.04em;color:#fff;line-height:1}
-.hero-stat-label{font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);margin-top:3px;font-family:'JetBrains Mono',monospace}
+.hero-stat{display:flex;flex-direction:column;padding:0 20px;text-align:right;border-left:1px solid var(--b2)}
+.hero-stat:first-child{border-left:none;padding-right:20px}
+.hero-stat-num{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.04em;color:#fff;line-height:1}
+.hero-stat-label{font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-top:5px;font-family:'JetBrains Mono',monospace}
 
 .hero-indicators{
   position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
@@ -357,7 +338,7 @@ nav.nav-hidden{transform:translateY(-100%)}
 .btn-primary:active{transform:translateY(0) scale(.98)}
 .btn-ghost{
   display:inline-flex;align-items:center;gap:7px;
-  color:rgba(226,226,242,.65);background:rgba(255,255,255,.05);
+  color:rgba(242,242,242,.65);background:rgba(255,255,255,.05);
   font-family:'Inter',sans-serif;font-size:13px;font-weight:500;
   padding:13px 22px;border-radius:8px;border:1px solid var(--b);cursor:pointer;
   transition:color .16s,border-color .16s,background .16s,transform .12s;
@@ -374,16 +355,6 @@ nav.nav-hidden{transform:translateY(-100%)}
 .mobile-stat:last-child{border-right:none}
 .mobile-stat-num{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.04em;color:#fff;line-height:1;display:block}
 .mobile-stat-label{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);margin-top:5px;font-family:'JetBrains Mono',monospace;display:block}
-
-.marquee-wrap{overflow:hidden;border-top:1px solid var(--b2);border-bottom:1px solid var(--b2);padding:12px 0;background:var(--s1);position:relative}
-.marquee-wrap::before,.marquee-wrap::after{content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;pointer-events:none}
-.marquee-wrap::before{left:0;background:linear-gradient(to right,var(--s1),transparent)}
-.marquee-wrap::after{right:0;background:linear-gradient(to left,var(--s1),transparent)}
-.marquee-track{display:flex;white-space:nowrap;animation:marquee 30s linear infinite}
-.marquee-wrap:hover .marquee-track{animation-play-state:paused}
-.marquee-track span{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:.15em;color:var(--mu);padding:0 24px}
-.marquee-track span.accent{color:var(--red)}
-@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 .status-strip{display:grid;grid-template-columns:repeat(4,1fr);background:var(--s1);border-bottom:1px solid var(--b2)}
 .status-item{padding:24px 28px;border-right:1px solid var(--b2);position:relative;overflow:hidden;transition:background .25s}
@@ -415,8 +386,8 @@ nav.nav-hidden{transform:translateY(-100%)}
 .hub-card:hover::before{opacity:1}
 .hub-card img{width:100%;height:100%;object-fit:cover;filter:brightness(.22) saturate(.5);transition:filter .5s var(--ease-soft),transform .6s var(--ease-soft)}
 .hub-card:hover img{filter:brightness(.48) saturate(.95);transform:scale(1.05)}
-.hub-card-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:20px;background:linear-gradient(to top,rgba(8,8,15,.95) 0%,rgba(8,8,15,.2) 55%,transparent 100%);transition:background .4s}
-.hub-card:hover .hub-card-overlay{background:linear-gradient(to top,rgba(8,8,15,.98) 0%,rgba(8,8,15,.4) 55%,transparent 100%)}
+.hub-card-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:20px;background:linear-gradient(to top,rgba(0,0,0,.95) 0%,rgba(0,0,0,.2) 55%,transparent 100%);transition:background .4s}
+.hub-card:hover .hub-card-overlay{background:linear-gradient(to top,rgba(0,0,0,.98) 0%,rgba(0,0,0,.4) 55%,transparent 100%)}
 .hub-card-tag{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:5px;font-family:'JetBrains Mono',monospace;opacity:0;transform:translateY(5px);transition:opacity .3s,transform .3s}
 .hub-card.hub- .hub-card-tag{color:var(--gold)}
 .hub-card:hover .hub-card-tag{opacity:1;transform:none}
@@ -463,7 +434,7 @@ footer{padding:32px max(28px,var(--safe-left));display:flex;align-items:center;j
 .back-to-top{
   position:fixed;right:20px;bottom:calc(20px + var(--safe-bottom));z-index:150;
   width:44px;height:44px;border-radius:50%;border:1px solid var(--b);
-  background:rgba(19,19,34,.85);backdrop-filter:blur(12px);color:var(--tx2);
+  background:rgba(17,17,17,.85);backdrop-filter:blur(12px);color:var(--tx2);
   display:flex;align-items:center;justify-content:center;cursor:pointer;
   opacity:0;transform:translateY(10px) scale(.9);pointer-events:none;
   transition:opacity .25s var(--ease),transform .25s var(--ease),background .2s,color .2s,border-color .2s;
@@ -846,8 +817,6 @@ select.fc{
 </head>
 <body>
 
-<div class="grain" aria-hidden="true"></div>
-<div class="court-lines" aria-hidden="true"></div>
 <div class="scroll-progress" id="scrollProgress"></div>
 
 <nav id="mainNav">
@@ -927,27 +896,6 @@ select.fc{
     <div class="mobile-stat"><span class="mobile-stat-num" data-count="30">0</span><span class="mobile-stat-label">Teams</span></div>
     <div class="mobile-stat"><span class="mobile-stat-num">S13</span><span class="mobile-stat-label">Season</span></div>
     <div class="mobile-stat"><span class="mobile-stat-num" style="color:var(--gr);font-size:16px;padding-top:4px;">●</span><span class="mobile-stat-label">Live</span></div>
-  </div>
-
-  <div class="marquee-wrap" aria-hidden="true">
-    <div class="marquee-track">
-      <span>RPL Season 13</span><span class="accent">●</span>
-      <span>30 Franchises</span><span class="accent">●</span>
-      <span>Elite Competition</span><span class="accent">●</span>
-      <span>Standings Live</span><span class="accent">●</span>
-      <span>History Active</span><span class="accent">●</span>
-      <span>Salary System</span><span class="accent">●</span>
-      <span>Star System</span><span class="accent">●</span>
-      <span>Roblox Basketball</span><span class="accent">●</span>
-      <span>RPL Season 13</span><span class="accent">●</span>
-      <span>30 Franchises</span><span class="accent">●</span>
-      <span>Elite Competition</span><span class="accent">●</span>
-      <span>Standings Live</span><span class="accent">●</span>
-      <span>History Active</span><span class="accent">●</span>
-      <span>Salary System</span><span class="accent">●</span>
-      <span>Star System</span><span class="accent">●</span>
-      <span>Roblox Basketball</span><span class="accent">●</span>
-    </div>
   </div>
 
   <div class="status-strip reveal">
