@@ -671,6 +671,7 @@ footer{padding:32px max(28px,var(--safe-left));display:flex;align-items:center;j
   <div class="nav-center">
     <button onclick="navigate('home')"      data-page="home"      class="active">Home</button>
     <button onclick="navigate('salary')"    data-page="salary">Salary</button>
+      <button onclick="navigate('capsheet')"    data-page="capsheet">Capsheet</button>
     <button onclick="navigate('database')"  data-page="database">Database</button>
     <button onclick="navigate('standings')" data-page="standings">Standings</button>
     <button onclick="navigate('history')"   data-page="history">History</button>
@@ -691,7 +692,7 @@ footer{padding:32px max(28px,var(--safe-left));display:flex;align-items:center;j
 
 <div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile navigation">
   <button onclick="navigate('home');closeMenu()"      data-page="home"      class="active">Home</button>
-  <button onclick="navigate('salary');closeMenu()"    data-page="salary">Salary</button>
+  <button onclick="navigate('capsheet');closeMenu()"    data-page="capsheet">Capsheet</button>
   <button onclick="navigate('database');closeMenu()"  data-page="database">Database</button>
   <button onclick="navigate('standings');closeMenu()" data-page="standings">Standings</button>
   <button onclick="navigate('history');closeMenu()"   data-page="history">History</button>
@@ -815,6 +816,11 @@ footer{padding:32px max(28px,var(--safe-left));display:flex;align-items:center;j
 <div id="page-salary" class="page iframe-page hidden">
   <div class="iframe-loading" id="loading-salary"><div class="spinner"></div><p>Loading Salary…</p></div>
   <iframe src="https://rplmastersheet.vercel.app/" onload="document.getElementById('loading-salary').classList.add('done')" title="Salary"></iframe>
+</div>
+
+<div id="page-capsheet" class="page iframe-page hidden">
+  <div class="iframe-loading" id="loading-capsheet"><div class="spinner"></div><p>Loading Capsheet…</p></div>
+  <iframe src="https://rplcapsheet.vercel.app/" onload="document.getElementById('loading-capsheet').classList.add('done')" title="Capsheet"></iframe>
 </div>
 
 <div id="page-database" class="page iframe-page hidden">
@@ -999,6 +1005,7 @@ window.addEventListener('scroll',()=>{
 const PAGE_TITLES={
   home:'RPL — Revolutionary Pro League',
   salary:'Salary — RPL',
+  capsheet:'Capsheet — RPL',
   database:'Team Database — RPL',
   standings:'Standings — RPL',
   history:'History — RPL',
