@@ -1142,28 +1142,39 @@ if(scrollCueBtn){
 
 (function(){
   const CHANNEL_ID='UCC5gvc4coST3DG7yfRRGTZQ';
-  const UPLOADS_PLAYLIST='UU'+CHANNEL_ID.slice(2);
+
+  const FEATURED_VIDEO_ID='';
+
   const frame=document.getElementById('ytEmbedFrame');
   const promo=document.getElementById('ytPromo');
   const badge=document.getElementById('ytLiveBadge');
   const note=document.getElementById('ytEmbedNote');
   if(!frame)return;
 
-  function fallbackToPromo(){
+  function showPromo(){
     frame.style.display='none';
+    frame.removeAttribute('src');
     if(promo)promo.style.display='flex';
   }
 
-  frame.src='https://www.youtube.com/embed/videoseries?list='+UPLOADS_PLAYLIST+'&rel=0&enablejsapi=1';
-  frame.style.display='block';
-  if(promo)promo.style.display='none';
+  function playVideo(videoId){
+    frame.src='https://www.youtube.com/embed/'+videoId+'?rel=0&enablejsapi=1';
+    frame.style.display='block';
+    if(promo)promo.style.display='none';
+  }
 
   window.addEventListener('message',function(e){
     if(e.origin!=='https://www.youtube.com')return;
     let data;
     try{ data=JSON.parse(e.data); }catch(err){ return; }
-    if(data.event==='onError')fallbackToPromo();
+    if(data.event==='onError')showPromo();
   });
+
+  if(FEATURED_VIDEO_ID){
+    playVideo(FEATURED_VIDEO_ID);
+  }else{
+    showPromo();
+  }
 
   const liveCheckUrl='https://www.youtube.com/oembed?url='+encodeURIComponent('https://www.youtube.com/channel/'+CHANNEL_ID+'/live')+'&format=json';
 
@@ -1174,9 +1185,7 @@ if(scrollCueBtn){
       const match=thumb.match(/\/vi\/([^\/]+)\//);
       const videoId=match?match[1]:null;
       if(!videoId)throw new Error('no video id');
-      frame.src='https://www.youtube.com/embed/'+videoId+'?rel=0&enablejsapi=1';
-      frame.style.display='block';
-      if(promo)promo.style.display='none';
+      playVideo(videoId);
       if(badge)badge.style.display='inline-flex';
       if(note)note.textContent=(data.title||'Live broadcast')+' — streaming now.';
     })
