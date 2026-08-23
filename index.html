@@ -403,6 +403,11 @@ nav.nav-hidden{transform:translateY(-100%)}
   color:var(--tx2);background:var(--s3);border:1px solid var(--glass-border);
   border-radius:20px;padding:3px 10px;
 }
+.sec-ct.sec-ct-live{
+  color:#ff4d5e;border-color:rgba(232,0,29,.4);background:rgba(232,0,29,.12);
+  display:inline-flex;align-items:center;gap:6px;
+}
+.sec-ct.sec-ct-live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--red);display:inline-block;animation:sLivePulse 2s ease infinite}
 .sec-rule{flex:1;height:1px;background:var(--glass-border);min-width:24px}
 
 .hub-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
@@ -436,6 +441,18 @@ nav.nav-hidden{transform:translateY(-100%)}
 .hub-card:hover .hub-card-name{transform:none}
 .hub-card-arrow{position:absolute;z-index:3;top:14px;right:14px;width:28px;height:28px;background:var(--glass-bg-soft);border:1px solid var(--glass-border);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(4px) scale(.9);transition:opacity .22s,transform .22s,background .22s;backdrop-filter:blur(8px)}
 .hub-card:hover .hub-card-arrow{opacity:1;transform:translateY(0) scale(1);background:rgba(255,255,255,.18)}
+
+.yt-embed-card{
+  background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:16px;
+  overflow:hidden;box-shadow:var(--glass-shadow);
+}
+.yt-embed-wrap{position:relative;width:100%;padding-top:56.25%;background:#000}
+.yt-embed-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;display:block}
+.yt-embed-footer{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  padding:18px 22px;
+}
+.yt-embed-note{font-size:12.5px;color:var(--tx2);line-height:1.6}
 
 .links-section{border-top:1px solid var(--glass-border);border-bottom:1px solid var(--glass-border);background:var(--s1)}
 .links-grid{display:grid;grid-template-columns:1fr 1fr 1fr}
@@ -527,6 +544,7 @@ footer{padding:32px max(28px,var(--safe-left));display:flex;align-items:center;j
   .status-item:nth-child(4){border-right:none;border-top:1px solid var(--glass-border)}
   .section{padding:56px 20px}
   .section-header{margin-bottom:28px}
+  .yt-embed-footer{padding:16px}
   footer{flex-direction:column;align-items:flex-start;padding:28px 20px;padding-bottom:max(28px,var(--safe-bottom));gap:10px}
   .footer-links{gap:14px}
 }
@@ -552,6 +570,9 @@ footer{padding:32px max(28px,var(--safe-left));display:flex;align-items:center;j
   .status-label{font-size:9px}
   .section{padding:44px 16px}
   .section-title{font-size:clamp(28px,8vw,40px)}
+  .yt-embed-card{border-radius:13px}
+  .yt-embed-footer{flex-direction:column;align-items:flex-start}
+  .yt-embed-footer .btn-ghost{width:100%;justify-content:center}
   .link-card{padding:24px 16px;gap:14px}
   .link-icon{width:40px;height:40px;border-radius:10px}
   .link-title{font-size:20px;margin-bottom:6px}
@@ -720,6 +741,36 @@ footer{padding:32px max(28px,var(--safe-left));display:flex;align-items:center;j
         <img src="Images/RPLGraphic4.png" alt="" loading="lazy">
         <div class="hub-card-overlay"><div class="hub-card-tag">Policies</div><div class="hub-card-name">Rulebook</div></div>
         <div class="hub-card-arrow" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="sec-hd-top reveal">
+        <span class="section-title" style="font-size:19px;letter-spacing:.08em;">Latest from YouTube</span>
+        <span class="sec-ct sec-ct-live" id="ytLiveBadge" style="display:none;">Live Now</span>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="section-eyebrow reveal" style="margin-top:6px;">Highlights, Recaps &amp; Live Broadcasts</div>
+    </div>
+    <div class="yt-embed-card reveal">
+      <div class="yt-embed-wrap">
+        <iframe
+          id="ytEmbedFrame"
+          src="https://www.youtube.com/embed/videoseries?list=UUC5gvc4coST3DG7yfRRGTZQ&rel=0"
+          title="RPL YouTube"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          loading="lazy">
+        </iframe>
+      </div>
+      <div class="yt-embed-footer">
+        <span class="yt-embed-note" id="ytEmbedNote">New videos posted regularly — check back for the latest highlights.</span>
+        <a href="https://www.youtube.com/@SportingGear/featured" target="_blank" rel="noopener" class="btn-ghost">
+          View More
+          <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
       </div>
     </div>
   </div>
@@ -1010,6 +1061,29 @@ document.getElementById('backToTop').addEventListener('click',()=>{
   };
 
   showApplyPopup();
+})();
+
+(function(){
+  const CHANNEL_ID='UCC5gvc4coST3DG7yfRRGTZQ';
+  const frame=document.getElementById('ytEmbedFrame');
+  const badge=document.getElementById('ytLiveBadge');
+  const note=document.getElementById('ytEmbedNote');
+  if(!frame)return;
+
+  const liveCheckUrl='https://www.youtube.com/oembed?url='+encodeURIComponent('https://www.youtube.com/channel/'+CHANNEL_ID+'/live')+'&format=json';
+
+  fetch(liveCheckUrl)
+    .then(res=>{ if(!res.ok) throw new Error('not live'); return res.json(); })
+    .then(data=>{
+      const thumb=data.thumbnail_url||'';
+      const match=thumb.match(/\/vi\/([^\/]+)\//);
+      const videoId=match?match[1]:null;
+      if(!videoId)throw new Error('no video id');
+      frame.src='https://www.youtube.com/embed/'+videoId+'?rel=0';
+      if(badge)badge.style.display='inline-flex';
+      if(note)note.textContent=(data.title||'Live broadcast')+' — streaming now.';
+    })
+    .catch(()=>{ /* no active livestream, keep the uploads preview */ });
 })();
 </script>
 </body>
