@@ -445,6 +445,7 @@ nav.nav-hidden{transform:translateY(-100%)}
 .yt-embed-card{
   background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:16px;
   overflow:hidden;box-shadow:var(--glass-shadow);
+  max-width:640px;margin:0 auto;
 }
 .yt-embed-wrap{position:relative;width:100%;padding-top:56.25%;background:#000}
 .yt-embed-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;display:block}
@@ -618,7 +619,7 @@ footer{padding:32px max(28px,var(--safe-left));display:flex;align-items:center;j
   .status-label{font-size:9px}
   .section{padding:44px 16px}
   .section-title{font-size:clamp(28px,8vw,40px)}
-  .yt-embed-card{border-radius:13px}
+  .yt-embed-card{border-radius:13px;max-width:100%}
   .yt-promo{gap:10px;padding:18px}
   .yt-promo-play{width:54px;height:54px}
   .yt-promo-play svg{width:18px;height:18px}
@@ -814,7 +815,7 @@ footer{padding:32px max(28px,var(--safe-left));display:flex;align-items:center;j
     </div>
     <div class="yt-embed-card reveal">
       <div class="yt-embed-wrap">
-        <a class="yt-promo" id="ytPromo" href="https://www.youtube.com/@SportingGear/featured" target="_blank" rel="noopener">
+        <a class="yt-promo" id="ytPromo" href="https://www.youtube.com/@SportingGear/featured" target="_blank" rel="noopener" style="display:none;">
           <div class="yt-promo-play" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
           </div>
@@ -826,8 +827,7 @@ footer{padding:32px max(28px,var(--safe-left));display:flex;align-items:center;j
           title="RPL YouTube"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
-          loading="lazy"
-          style="display:none;">
+          loading="lazy">
         </iframe>
       </div>
       <div class="yt-embed-footer">
@@ -1142,11 +1142,14 @@ if(scrollCueBtn){
 
 (function(){
   const CHANNEL_ID='UCC5gvc4coST3DG7yfRRGTZQ';
+  const UPLOADS_PLAYLIST='UU'+CHANNEL_ID.slice(2);
   const frame=document.getElementById('ytEmbedFrame');
   const promo=document.getElementById('ytPromo');
   const badge=document.getElementById('ytLiveBadge');
   const note=document.getElementById('ytEmbedNote');
   if(!frame)return;
+
+  frame.src='https://www.youtube.com/embed/videoseries?list='+UPLOADS_PLAYLIST+'&rel=0';
 
   const liveCheckUrl='https://www.youtube.com/oembed?url='+encodeURIComponent('https://www.youtube.com/channel/'+CHANNEL_ID+'/live')+'&format=json';
 
@@ -1158,12 +1161,10 @@ if(scrollCueBtn){
       const videoId=match?match[1]:null;
       if(!videoId)throw new Error('no video id');
       frame.src='https://www.youtube.com/embed/'+videoId+'?rel=0';
-      frame.style.display='block';
-      if(promo)promo.style.display='none';
       if(badge)badge.style.display='inline-flex';
       if(note)note.textContent=(data.title||'Live broadcast')+' — streaming now.';
     })
-    .catch(()=>{ /* nothing live right now — keep the YouTube promo card */ });
+    .catch(()=>{});
 })();
 </script>
 </body>
