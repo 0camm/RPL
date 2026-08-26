@@ -9,7 +9,7 @@
 <link rel="icon" href="Images/RPL-Logo.png?v=2" type="image/png">
 
 <meta property="og:title" content="RPL — Revolutionary Pro League" />
-<meta property="og:description" content="The most structured click-to-shoot basketball league on Roblox. Elite systems. Real competition. Season 13 now active." />
+<meta property="og:description" content="The most structured click-to-shoot basketball league on Roblox. Elite systems. Real competition. Season 14 now active." />
 <meta property="og:image" content="https://rpl.pages.dev/Images/RPLBANNER.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -20,15 +20,15 @@
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="RPL — Revolutionary Pro League" />
-<meta name="twitter:description" content="The most structured click-to-shoot basketball league on Roblox. Elite systems. Real competition. Season 13 now active." />
+<meta name="twitter:description" content="The most structured click-to-shoot basketball league on Roblox. Elite systems. Real competition. Season 14 now active." />
 <meta name="twitter:image" content="https://rpl.pages.dev/Images/RPLBANNER.png" />
 <meta name="twitter:image:alt" content="RPL — Revolutionary Pro League" />
 <style>
 
 :root{
-  --red:#e8001d;--red-a:.08;
-  --red-dim:rgba(232,0,29,.09);--red-mid:rgba(232,0,29,.2);--red-edge:rgba(232,0,29,.45);
-  --red-glow:rgba(232,0,29,.45);
+  --red:#ff1233;--red-a:.08;
+  --red-dim:rgba(255,18,51,.09);--red-mid:rgba(255,18,51,.22);--red-edge:rgba(255,18,51,.5);
+  --red-glow:rgba(255,18,51,.45);
   --bg:#0f0f1a;--s1:#151524;--s2:#1a1a2c;--s3:#202035;--s4:#28283f;
   --surface:var(--s1);--surface2:var(--s2);
   --b:rgba(255,255,255,.10);--b2:rgba(255,255,255,.055);
@@ -674,6 +674,23 @@ footer{padding:32px max(28px,var(--safe-left));display:flex;align-items:center;j
 .toast.out{animation:tOut .2s ease forwards}
 @keyframes tIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes tOut{from{opacity:1}to{opacity:0;transform:translateY(-5px)}}
+
+/* ══════════════════════════════════════════
+   VISUAL POLISH PASS (layered on top, same
+   classes/markup — no structural changes)
+══════════════════════════════════════════ */
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--s4);border-radius:8px;border:2px solid var(--bg)}
+::-webkit-scrollbar-thumb:hover{background:var(--mu2)}
+::selection{background:rgba(255,18,51,.3);color:#fff}
+h1 em,.nav-brand em{
+  background:linear-gradient(180deg,#ff4d5e 10%,var(--red) 90%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 2px 20px rgba(255,18,51,.35));
+}
+.btn-primary:hover,.nav-cta:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(255,18,51,.3);}
+.btn-ghost:hover{transform:translateY(-1px);}
 </style>
 </head>
 <body>
@@ -686,7 +703,7 @@ footer{padding:32px max(28px,var(--safe-left));display:flex;align-items:center;j
       <img src="Images/RPL-Logo.png" alt="RPL" style="width:30px;height:30px;object-fit:contain;border-radius:7px;">
       <span class="nav-brand">Revolutionary <em>Pro League</em></span>
     </div>
-    <span class="nav-pill">Season 13</span>
+    <span class="nav-pill">Season 14</span>
   </div>
   <div class="nav-center">
     <button onclick="navigate('home')"      data-page="home"      class="active">Home</button>
@@ -731,7 +748,7 @@ footer{padding:32px max(28px,var(--safe-left));display:flex;align-items:center;j
     <div class="hero-top-fade"></div>
     <div class="hero-vignette"></div>
     <div class="hero-content" id="heroContent">
-      <div class="hero-eyebrow">Season 13 — Now Active</div>
+      <div class="hero-eyebrow">Season 14 — Now Active</div>
       <h1><span class="ln">Revolutionary</span><span class="ln"><em>Pro League</em></span></h1>
       <p class="hero-sub">The most structured click-to-shoot basketball league on Roblox. Elite systems. Real competition.</p>
       <div class="hero-actions">
@@ -743,13 +760,13 @@ footer{padding:32px max(28px,var(--safe-left));display:flex;align-items:center;j
       </div>
       <div class="hero-key-row">
         <div class="hero-key-chip"><span class="dot on"></span>Live Standings</div>
-        <div class="hero-key-chip"><span class="dot" style="background:var(--bl)"></span>Season 13</div>
+        <div class="hero-key-chip"><span class="dot" style="background:var(--bl)"></span>Season 14</div>
         <div class="hero-key-chip"><span class="dot" style="background:var(--am)"></span>30 Franchises</div>
       </div>
     </div>
     <div class="hero-stats">
       <div class="hero-stat"><span class="hero-stat-num" data-count="30">0</span><span class="hero-stat-label">Franchises</span></div>
-      <div class="hero-stat"><span class="hero-stat-num">S13</span><span class="hero-stat-label">Current Season</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">S14</span><span class="hero-stat-label">Current Season</span></div>
       <div class="hero-stat"><span class="hero-stat-num">Live</span><span class="hero-stat-label">Standings</span></div>
     </div>
     <button class="scroll-cue" id="scrollCue" aria-label="Scroll down to see more">
@@ -760,14 +777,14 @@ footer{padding:32px max(28px,var(--safe-left));display:flex;align-items:center;j
 
   <div class="mobile-stats">
     <div class="mobile-stat"><span class="mobile-stat-num" data-count="30">0</span><span class="mobile-stat-label">Teams</span></div>
-    <div class="mobile-stat"><span class="mobile-stat-num">S13</span><span class="mobile-stat-label">Season</span></div>
+    <div class="mobile-stat"><span class="mobile-stat-num">S14</span><span class="mobile-stat-label">Season</span></div>
     <div class="mobile-stat"><span class="mobile-stat-num" style="color:var(--gr);font-size:16px;padding-top:4px;">●</span><span class="mobile-stat-label">Live</span></div>
   </div>
 
   <div class="status-strip reveal">
     <div class="status-item"><div class="status-label">Season Status</div><div class="status-live"><div class="live-dot"></div>Live</div></div>
     <div class="status-item"><div class="status-label">Active Teams</div><div class="status-value" data-count="30">0</div></div>
-    <div class="status-item"><div class="status-label">Season</div><div class="status-value" data-count="13">0</div></div>
+    <div class="status-item"><div class="status-label">Season</div><div class="status-value" data-count="14">0</div></div>
     <div class="status-item"><div class="status-label">Scripts</div><div class="status-value">Gameday</div></div>
   </div>
 
@@ -930,7 +947,7 @@ footer{padding:32px max(28px,var(--safe-left));display:flex;align-items:center;j
   <div style="padding:18px 20px 6px;display:flex;align-items:center;justify-content:space-between">
     <div style="font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#ff4d5e;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;gap:7px">
       <span style="width:6px;height:6px;border-radius:50%;background:var(--red);display:inline-block;animation:sLivePulse 2s ease infinite"></span>
-      Season 13 Applications
+      Season 14 Applications
     </div>
     <button onclick="closeApplyPopup()" style="background:rgba(255,255,255,.07);border:1px solid var(--glass-border);cursor:pointer;color:var(--tx2);font-size:14px;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;transition:all .13s;flex-shrink:0" onmouseover="this.style.color='#fff'" onmouseout="this.style.color=''">✕</button>
   </div>
